@@ -1,0 +1,9 @@
+{
+    "profilePicture": "https://via.placeholder.com/150",
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "location": "New York",
+    "skills": ["React", "JavaScript", "CSS"],
+    "about": "Full-stack developer with 5 years of experience."
+  }
+  

@@ -1,0 +1,79 @@
+.profileContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
+.profileCard {
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 350px;
+  text-align: center;
+}
+
+.profileImage {
+  width: 150px;
+  height: 150px; /* Ensure height matches width for a perfect circle */
+  border-radius: 50%; /* Makes the container circular */
+  overflow: hidden; /* Ensures image doesn’t overflow container */
+  margin: 0 auto 20px; /* Center container and add margin */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 5px solid #00aaff; /* Border around the circle */
+}
+
+.profileImage img {
+  width: 100%; /* Ensure image fills container */
+  height: 100%; /* Ensure image fills container */
+  object-fit: contain; /* Maintain aspect ratio and cover container */
+}
+
+.profileDetails h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333333;
+}
+
+.profileDetails p {
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #777777;
+}
+
+.profileInfo {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.profileField {
+  margin-bottom: 15px;
+}
+
+.profileField label {
+  font-weight: bold;
+  color: #555555;
+  display: block;
+}
+
+.profileField p {
+  color: #444444;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .profileCard {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .profileImage {
+    width: 120px;
+    height: 120px; /* Maintain aspect ratio for smaller screens */
+  }
+}

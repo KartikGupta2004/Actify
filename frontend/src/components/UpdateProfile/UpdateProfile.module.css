@@ -1,0 +1,278 @@
+.profile-container {
+  display: flex;
+  justify-content: space-between; /* Distribute space between items */
+  align-items: flex-start; /* Align items to the top */
+  height: 100%; /* Full viewport height */
+  background-color: white;
+  width: 100%; /* Ensure it takes full width */
+  padding: 20px; /* Add padding for spacing */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.profile-image-container {
+  flex: 1; /* Make it flexible to occupy space */
+  max-width: 50%; /* Limit the maximum width to 45% of the container */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center the content vertically */
+  align-items: center; /* Center the content horizontally */
+  padding: 0px;
+  background-color: white; /* Neutral background */
+}
+.object-fill {
+  height: 600px;
+  width: 600px;
+}
+.profile-form-container {
+  flex: 1; /* Make it flexible to occupy space */
+  margin-top: 20px;
+  margin-bottom: 50px;
+  max-width: 400px; /* Limit the maximum width of the form container */
+  padding: 15px;
+  border: 1px solid black;
+  border-radius: 8px;
+  background-color: rgb(51, 156, 216);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-height: 600px; /* Increase height for larger content */
+  overflow-y: auto; /* Enable scrolling if content overflows */
+  display: flex;
+  flex-direction: column; /* Ensure proper alignment */
+  margin-right: 20px;
+}
+
+/* Profile Title */
+.profile-title {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Form Styling */
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* Full width of the form container */
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+/* Smaller Brutalist Input for Textboxes */
+.brutalist-input {
+  width: 100%;
+  padding: 6px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #000;
+  background-color: #fff;
+  border: 3px solid #000;
+  border-radius: 0;
+  position: relative;
+  outline: none;
+  box-shadow: 2px 2px 0 #000, 4px 4px 0 #4a90e2;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.brutalist-input:focus {
+  animation: focus-pulse 4s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;
+}
+
+.brutalist-input:focus::placeholder {
+  color: transparent;
+}
+
+/* Brutalist Label */
+.brutalist-label {
+  display: block;
+  margin-top: 3px;
+  font-weight: bold;
+  font-size: 0.75rem;
+}
+
+/* Submit Button Styling */
+.button {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  margin-top: 15px; /* Space above the button */
+  align-self: center; /* Center the button */
+}
+.button:hover {
+  background-color: #555;
+}
+
+/* Image Styling */
+.profile-photo {
+  max-width: 100%; /* Full width within the image container */
+  max-height: 150px; /* Limit height to prevent overflow */
+  border-radius: 50%;
+  display: block;
+  margin: 15px auto; /* Center the image horizontally with margin for space */
+}
+
+/* Card Component */
+.card {
+  width: 100%; /* Full width of the container */
+  max-width: 400px; /* Adjust max-width to fit form */
+  padding: 20px;
+  max-height: 1000px; /* Add padding for spacing */
+  background: #fff;
+  border: 8px solid #000;
+  box-shadow: 15px 15px 0 #000;
+  transform: rotate(-2deg);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:active {
+  animation: shake 0.5s ease-in-out;
+}
+
+.card:hover {
+  transform: rotate(0deg) scale(1.02);
+  box-shadow: 20px 20px 0 #000;
+}
+
+.banner {
+  position: absolute;
+  top: 3px;
+  right: -95px;
+  background: #000;
+  color: #fff;
+  padding: 15px;
+  width: 350px;
+  text-align: center;
+  transform: rotate(45deg);
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: 2px;
+  overflow: hidden;
+  transition: background 0.5s ease;
+}
+
+.banner-text {
+  display: inline-block;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  width: 100%;
+  position: absolute;
+  left: 13%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.banner:hover .banner-text:first-child {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+.banner:hover .banner-text:last-child {
+  opacity: 1;
+  transform: translateY(-40%);
+}
+
+.banner-text:last-child {
+  opacity: 0;
+  transform: translateY(60%);
+}
+
+.banner:hover {
+  background: red;
+}
+
+.card__title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #000;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: block;
+  border-bottom: 2px solid #000;
+}
+
+.card__subtitle {
+  font-size: 16px;
+  line-height: 1.4;
+  color: #333;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+
+.card__form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card__form input {
+  padding: 12px;
+  border: 4px solid #000;
+  font-size: 16px;
+  font-family: "Proxima Nova", sans-serif;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+.card__form input:focus {
+  outline: none;
+  transform: scale(1.05);
+}
+
+.sign-up {
+  border: 4px solid #000;
+  background: #000;
+  color: #fff;
+  padding: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sign-up:hover {
+  background: #fff;
+  color: #000;
+  transform: translateY(-5px);
+  box-shadow: 0 5px 0 #000;
+}
+
+.sign-up:active {
+  animation: shake 0.5s ease-in-out;
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+/* Keyframes for animations */
+@keyframes focus-pulse {
+  0%,
+  100% {
+    border-color: #000;
+  }
+  50% {
+    border-color: #4a90e2;
+  }
+}
