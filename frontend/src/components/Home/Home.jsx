@@ -1,25 +1,51 @@
-import React from "react";
+import {React,useState} from "react";
 import "./Home.css";
 import animation from "/home-image.png";
+import about from "/About.png";
 import { NavLink } from "react-router-dom";
+import avatarIcon from "./Profile-Image.png";
 
 const Home = () => {
   const userType = localStorage.getItem("userType");
-  const isLoggedIn = localStorage.getItem("token");
+  const isLoggedIn = localStorage.getItem("authToken");
+  const testimonials = [
+    {
+      text: "Actify helped me find the perfect volunteering opportunity to use my skills for a good cause!",
+      name: "Emily Thompson",
+    },
+    {
+      text: "As an organization, we found dedicated volunteers quickly and easily. It’s an excellent platform!",
+      name: "Michael Davis",
+    },
+    {
+      text: "I love how Actify connects like-minded people for meaningful causes. Truly a game changer!",
+      name: "Sarah Lee",
+    },
+  ];
+  const [testimonialIndex, setTestimonialIndex] = useState(0);
+
+  const nextTestimonial = () => {
+    setTestimonialIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+  };
+
+  const prevTestimonial = () => {
+    setTestimonialIndex((prevIndex) => 
+      (prevIndex - 1 + testimonials.length) % testimonials.length
+    );
+  };
   return (
     <main className="home-cont">
-      <section className="content">
-        <div className="title">JobConnect</div>
-        <p className="desc">
-          A dynamic platform where employers can post job opportunities and
-          connect with skilled freelancers. Browse profiles, review portfolios,
-          and hire the right talent for your projects.
+      <div className="flex my-5">
+      <section className="content pt-20">
+        <div className="title">Actify</div>
+        <p className="desc text-2xl my-5">
+          Discover meaningful service opportunities, connect with mission-driven organizations, and make a difference together!
         </p>
         <NavLink
           to={
             isLoggedIn
               ? userType === "user"
-                ? "/joblist"
+                ? "/jobList"
                 : "/addjob"
               : "/signup"
           }
@@ -31,8 +57,8 @@ const Home = () => {
               <span className="span">
                 {isLoggedIn
                   ? userType === "user"
-                    ? "FIND JOBS"
-                    : "POST JOB"
+                    ? "FIND OPPORTUNITIES"
+                    : "POST OPPORTUNITIES"
                   : "SIGNUP"}
               </span>
               <span className="second">
@@ -76,6 +102,68 @@ const Home = () => {
       <section className="animation">
         <img src={animation} alt="" className="" />
       </section>
+      </div>
+      <div>
+        <div className="flex">
+          <section className="animation">
+            <img src={about} alt="" className="" />
+          </section>
+          <div className="flex items-center ml-10">
+          <section className="about-section">
+            <h2 className="font-bold text-3xl">About Actify</h2>
+            <p className="mt-3">
+              Actify is your gateway to meaningful volunteer work, enabling you to contribute your time and skills to make a positive impact. Join our community of dedicated volunteers and mission-driven organizations!
+            </p>
+          </section>
+          </div>
+      </div>
+
+      {/* Testimonials Section */}
+      <div className="flex justify-between">
+      <div className="flex items-center">
+      <section className="about-section">
+        <h1 className="font-bold text-3xl">
+        Testimonials
+        </h1>
+        <p className="mt-3">
+        Our community speaks for us! Read what our users have to say about their journeys with us. Their stories reflect the trust, quality, and connection we strive to foster with every service.
+        </p>
+      </section>
+      </div>
+      <section className="testimonials-section">
+        <div className="testimonial-card">
+          <button onClick={prevTestimonial} className="nav-button text-black mr-5 bg-white rounded-full px-5 py-2">&lt;</button>
+          <div className="testimonial-content">
+            <div className="quote-icon quote-start">“</div>
+            <img src={avatarIcon} alt="Avatar" className="profileImage" />
+            <p className="testimonial-text">{testimonials[testimonialIndex].text}</p>
+            <p className="testimonial-name">{testimonials[testimonialIndex].name}</p>
+            <div className="quote-icon quote-end">”</div>
+          </div>
+          <button onClick={nextTestimonial} className="nav-button text-black ml-5 bg-white rounded-full px-5 py-2">&gt;</button>
+        </div>
+      </section>
+      </div>
+
+      {/* FAQs Section */}
+      <div className="flex flex-col justify-center items-center mt-10">
+        <h1 className="font-bold text-3xl">Frequently Asked Questions</h1>
+      <section className="faq-section">
+        <div className="faq-item">
+          <h3>How do I sign up as a volunteer?</h3>
+          <p>Simply click the "SIGNUP" button and follow the steps to create your profile.</p>
+        </div>
+        <div className="faq-item">
+          <h3>Is there any fee to use the platform?</h3>
+          <p>No, Actify is completely free for both volunteers and organizations.</p>
+        </div>
+        <div className="faq-item">
+          <h3>How can organizations find volunteers?</h3>
+          <p>Organizations can post their volunteer requirements, and suitable matches will be suggested based on skills and interests.</p>
+        </div>
+      </section>
+      </div>
+      </div>
     </main>
   );
 };

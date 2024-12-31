@@ -5,8 +5,8 @@ import UserNavbar from "../UserNavbar/UserNavbar";
 import OrgNavbar from "../OrgNavbar/OrgNavbar";
 const Navbar = () => {
   const userType = localStorage.getItem("userType");
-  const isLoggedIn = localStorage.getItem("token");
-  console.log("isloggedin", isLoggedIn);
+  const isLoggedIn = localStorage.getItem("authToken");
+  // console.log("isloggedin", isLoggedIn);
   const navigate = useNavigate();
   if (!isLoggedIn) {
     return (
@@ -39,11 +39,11 @@ const Navbar = () => {
           <div className="relative flex items-center justify-between">
             <div className="flex-shrink-0">
               <Link
-                to="/home"
+                to="/"
                 title=""
                 className="flex rounded outline-none text-2xl font-bold focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
               >
-                JOBCONNECT
+                Actify
               </Link>
             </div>
 
@@ -96,7 +96,7 @@ const Navbar = () => {
               </Link>
 
               <Link
-                to="/about"
+                to="/aboutUs"
                 title=""
                 className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
               >

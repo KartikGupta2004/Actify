@@ -15,15 +15,16 @@ import { generateEmbeddings } from "../embeddings/embeddings.js";
 const createJobController = async (req, res) => {
   try {
     console.log(req.body)
-    const { skills_required, ...otherData } = req.body; // Extracting required data
+    const { job_description, skills_required, ...otherData } = req.body; // Extracting required data
     const skills = skills_required.join(" "); // Convert array of skills to a single string
 
-    const currentEmbeddings = await generateEmbeddings(skills); // Wait for embeddings to be generated
+    const currentEmbeddings = await generateEmbeddings(skills + job_description); // Wait for embeddings to be generated
 
     // Create a new Job with the embeddings and other data
     const newJob = new Job({
       ...otherData,
       skills_required,
+      job_description,
       embeddings: currentEmbeddings,
     });
 
@@ -49,6 +50,7 @@ const getAllJobsController = async (req, res) => {
 // Get a single job by ID
 const getJobByIdController = async (req, res) => {
   try {
+    console.log(req.body)
     const job = await Job.findById(req.params.id);
     if (!job) {
       return res.status(404).json({ message: "Job not found" });
@@ -62,20 +64,43 @@ const getJobByIdController = async (req, res) => {
 // Update job
 const updateJobController = async (req, res) => {
   try {
-    const jobs = await Job.findOneAndUpdate({ _id: req.params.id }, req.body);
+    console.log(req.body);
+    const { job_description, skills_required, ...otherData } = req.body; // Extract required data
+    const skills = skills_required.join(" "); // Convert array of skills to a single string
+
+    const updatedEmbeddings = await generateEmbeddings(skills + job_description); // Wait for embeddings to be generated
+
+    // Update the job with new embeddings and other data
+    const updatedJob = await Job.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        ...otherData,
+        skills_required,
+        job_description,
+        embeddings: updatedEmbeddings,
+      },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedJob) {
+      return res.status(404).send({ success: false, message: "Job not found" });
+    }
+
     res.status(201).send({
       success: true,
       message: "Job Profile Updated",
+      data: updatedJob,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Error in updateJobController:", error); // Log error for debugging
     res.status(500).send({
       success: false,
       message: "Job Profile Update issue",
-      error,
+      error: error.message,
     });
   }
 };
+
 
 // Delete job
 const deleteJobController = async (req, res) => {

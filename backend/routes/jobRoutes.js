@@ -15,7 +15,7 @@ router.get("/get_all_job", authMiddleware, getAllJobsController);
 router.get("/get_id_job/:id", authMiddleware, getJobByIdController);
 
 //UPDATE_JOB || POST
-router.post("/update_id_job/:id", authMiddleware, updateJobController);
+router.put("/update_id_job/:id", authMiddleware, updateJobController);
 
 //DELETE_JOB || POST
 router.post("/delete_id_job/:id", authMiddleware, deleteJobController);

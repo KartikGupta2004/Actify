@@ -2,29 +2,76 @@ import React, { useState, useEffect } from "react";
 import { HiOutlineBookmark } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-function JobList() {
+import Loader from "../Loader/Loader";
+
+function UsersJobList() {
   const [search, setSearch] = useState("");
   const [workingSchedule, setWorkingSchedule] = useState([]);
   const [employmentType, setEmploymentType] = useState([]);
   const [jobs, setJobs] = useState([]);
-  const token = localStorage.getItem("token");
+  const [loading, setLoading] = useState(false);
+  const [userAppliedJobs, setUserAppliedJobs] = useState([]);
+  const authToken = localStorage.getItem("authToken");
+  const profile = localStorage.getItem("Profile") === "true" || false;
+  const [allApplied, setAllApplied] = useState(false);
   const navigate = useNavigate();
+
   useEffect(() => {
-    const func = async () => {
-      const res = await axios.get(
+    const fetchJob  = async () => {
+      setLoading(true);
+      try{
+      const jobsRes = await axios.get(
         "http://localhost:4000/api/v1/jobs/get_all_job",
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${authToken}`,
           },
         }
       );
-      setJobs(res.data);
-      // .then(response => setJobs(response.data))
-      // .catch(error => console.error('Error fetching jobs:', error));
+      setJobs(jobsRes.data);
+      // console.log(jobsRes.data);
+      } catch (error) {
+          alert('Error Occured!')
+          // console.error("Error fetching profile:", error);
+          // setError("Failed to fetch profile data");
+      } finally{
+        if(!profile){
+          setLoading(false);
+        }
+      }
     };
-    func();
-  }, []);
+
+    const fetchUserProfile  = async () => {
+      try{
+      const userRes = await axios.get(
+        "http://localhost:4000/api/v1/freelancer/view_profile",
+        {
+          headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+        setUserAppliedJobs(userRes.data.data.appliedJobs);
+      // console.log(jobsRes.data);
+      } catch (error) {
+          // console.error("Error fetching profile:", error);
+          // setError("Failed to fetch profile data");
+      } finally{
+        if (profile) {
+          setLoading(false); 
+        }
+      }
+  };
+
+
+      fetchJob();
+      if(profile){
+        fetchUserProfile();
+        if(jobs && userAppliedJobs && jobs.length === userAppliedJobs.length){
+          setAllApplied(true);
+        }
+      }
+  }, [authToken]);
 
   const handleWorkingScheduleChange = (e) => {
     const { value, checked } = e.target;
@@ -41,79 +88,82 @@ function JobList() {
   };
 
   function formatDate(isoString) {
-    // Convert to Date object
     const dateObj = new Date(isoString);
-
-    // Check if the date is valid
     if (isNaN(dateObj.getTime())) {
       return "Invalid date";
     }
-
-    // Format the date to a more aesthetic and readable string
     return dateObj.toLocaleString("en-US", {
       year: "numeric",
-      month: "short", // Abbreviated month name (e.g., "Sep")
+      month: "short",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      hour12: true, // 12-hour clock format
+      hour12: true,
     });
   }
 
   const filteredJobs = jobs.filter((job) => {
+    const isApplied = Array.isArray(userAppliedJobs) && userAppliedJobs.some(
+      (appliedJob) => appliedJob.jobId === job._id && 
+                      (appliedJob.status === "Applied" || appliedJob.status === "Not Selected" || appliedJob.status === "Working")
+    );
+  
+    const isUnseen = !isApplied || userAppliedJobs.some((appliedJob) => appliedJob.jobId === job._id && appliedJob.status === "Pending");
+  
     const searchTerm = search.toLowerCase();
     const matchesSearch =
       searchTerm === "" ||
       job.role.toLowerCase().includes(searchTerm) ||
-      // job.company.toLowerCase().includes(searchTerm) ||
       job.location_requirements.toLowerCase().includes(searchTerm);
-
+  
     const matchesWorkingSchedule =
       workingSchedule.length === 0 ||
       workingSchedule.includes(job.project_duration);
-
+  
     const matchesEmploymentType =
       employmentType.length === 0 ||
       employmentType.includes(job.location_requirements);
-
-    return matchesSearch && matchesWorkingSchedule && matchesEmploymentType;
+  
+    return isUnseen && matchesSearch && matchesWorkingSchedule && matchesEmploymentType;
   });
-  const DEFAULT_AVATAR = "https://ui-avatars.com/api/?name=Default+User";
+  
+  const handleRecommendedJobs = async () => {
+    navigate(`/recommendedJobs`);
+  };
+
+  const handleProfileClick = async(id)=>{
+      navigate(`/view_profile/${id}`);
+  }
+
   return (
-    <div className="text-black h-full bg-gray-100 py-10 px-6">
+    <div className="text-black h-fit bg-gray-100 py-10 px-6">
       <div className="flex h-full gap-8">
         {/* Left Part - Filters Section */}
-        <div className="w-1/4 bg-white rounded-lg shadow-md p-6 border border-gray-200">
+        <div className="w-1/4 bg-white rounded-lg shadow-md p-6 border border-gray-200 sticky top-[10px] max-h-fit overflow-y-auto">
           <p className="text-2xl font-bold mb-6">Filters</p>
 
           {/* Working Schedule Filter */}
           <div className="flex flex-col space-y-3 mb-8">
-            <p className="text-lg font-medium text-gray-700">
-              Working Schedule
-            </p>
-            {["Short Term", "Long Term", "Contract", "Permanent"].map(
-              (schedule) => (
-                <label
-                  key={schedule}
-                  className="flex items-center cursor-pointer hover:text-blue-600"
-                >
-                  <input
-                    className="mr-3 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer"
-                    type="checkbox"
-                    value={schedule}
-                    onChange={handleWorkingScheduleChange}
-                  />
-                  {schedule}
-                </label>
-              )
-            )}
+            <p className="text-lg font-medium text-gray-700">Working Schedule</p>
+            {["Short Term", "Long Term", "Contract", "Permanent"].map((schedule) => (
+              <label
+                key={schedule}
+                className="flex items-center cursor-pointer hover:text-blue-600"
+              >
+                <input
+                  className="mr-3 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer"
+                  type="checkbox"
+                  value={schedule}
+                  onChange={handleWorkingScheduleChange}
+                />
+                {schedule}
+              </label>
+            ))}
           </div>
 
           {/* Location Requirements Filter */}
           <div className="flex flex-col space-y-3">
-            <p className="text-lg font-medium text-gray-700">
-              Location Requirements
-            </p>
+            <p className="text-lg font-medium text-gray-700">Location Requirements</p>
             {["Remote", "On-site", "Hybrid"].map((location) => (
               <label
                 key={location}
@@ -130,10 +180,14 @@ function JobList() {
             ))}
           </div>
         </div>
+        {loading && <div className="flex justify-center items-center mx-auto h-3/4"><Loader /></div>}
+        
+        {allApplied && <p className="flex justify-center items-center mx-auto h-3/4 text-gray-500 text-4xl">No new jobs posted yet.</p>}
 
         {/* Right Part - Display Jobs Section */}
-        <div className="w-3/4">
+        {!loading && !allApplied && <div className="w-3/4">
           {/* Search Bar */}
+
           <div className="flex justify-between mb-8">
             <input
               onChange={(e) => setSearch(e.target.value)}
@@ -142,62 +196,63 @@ function JobList() {
               name="text"
               type="text"
             />
-            <button
+            {profile && filteredJobs.length>0 && <button
               className="bg-blue-500 text-white rounded-full px-4 py-2 hover:bg-blue-600 transition-colors"
-              onClick={() => navigate(`/recommendedJobs`)}
+              onClick={handleRecommendedJobs} // Call the new function here
             >
               Recommended Jobs
             </button>
+            }
           </div>
-
-          {/* Job Cards Grid */}
-          <div className="grid grid-cols-3 gap-8">
-            {filteredJobs.map((job) => (
-              <div
-                key={job._id}
-                className="w-full bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg transition-shadow duration-300"
-              >
-                <div className={`m-2 rounded-lg h-fit p-3 ${job.bgColor}`}>
-                  {/* Job Header */}
-                  <span className="flex justify-between items-center">
-                    <p className="bg-white text-xs px-3 py-1 rounded-full">
-                      {formatDate(job.application_deadline)}
-                    </p>
-                    {/* <HiOutlineBookmark className="w-6 h-6 text-gray-500" /> */}
-                  </span>
-
-                  {/* Company and Role */}
-                  <p className="font-bold text-sm text-gray-800 mt-4">
-                    {job.company}
-                  </p>
-                  <div className="flex justify-between items-center mt-2">
-                    <p className="text-lg font-semibold w-40">{job.role}</p>
-                    {/* Check if job.logo exists, else show default avatar */}
-                    <img
-                      src={
-                        job.logo ||
-                        `https://ui-avatars.com/api/?name=${job.company_description}`
-                      }
-                      alt={`${job.company} logo`}
-                      className="w-10 h-10 rounded-full object-cover"
-                    />
-                  </div>
-
-                  {/* Skills Required */}
-                  <div className="flex flex-wrap mt-4">
-                    {job.skills_required.map((skill, index) => (
-                      <p
-                        key={index}
-                        className="bg-gray-100 text-xs px-3 py-1 mb-2 mr-2 rounded-full border border-gray-300"
-                      >
-                        {skill}
+          
+            {/* Job Cards Grid */}
+            <div className="grid grid-cols-3 gap-8">
+              {filteredJobs.length>0 ? (filteredJobs.map((job) => (
+                <div
+                  key={job._id}
+                  className="w-full bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg transition-shadow duration-300"
+                >
+                  <div className={`m-2 rounded-lg h-fit p-3 ${job.bgColor}`}>
+                    {/* Job Header */}
+                    <span className="flex justify-between items-center">
+                      <p className="bg-white text-xs px-3 py-1 rounded-full">
+                        {formatDate(job.application_deadline)}
                       </p>
-                    ))}
-                  </div>
-                </div>
+                    </span>
 
-                {/* Job Details */}
-                <div className="flex justify-between items-center mt-4">
+                    {/* Company and Role */}
+                    <p className="font-bold text-sm text-gray-800 mt-4">
+                      {job.company}
+                    </p>
+                    <div className="flex justify-between items-center mt-2">
+                      <p className="text-lg font-semibold w-40">{job.role}</p>
+                      <button onClick={()=>{handleProfileClick(job.userId)}}>
+                        <img
+                          src={
+                            job.logo ||
+                            `https://ui-avatars.com/api/?name=${job.role}`
+                          }
+                          alt={`${job.company} logo`}
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                      </button>
+                    </div>
+
+                    {/* Skills Required */}
+                    <div className="flex flex-wrap mt-4">
+                      {job.skills_required.map((skill, index) => (
+                        <p
+                          key={index}
+                          className="bg-gray-100 text-xs px-3 py-1 mb-2 mr-2 rounded-full border border-gray-300"
+                        >
+                          {skill}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Job Details */}
+                  <div className="flex justify-between items-center mt-4">
                   <div>
                     <p className="font-bold text-gray-700">
                       {job.compensation}
@@ -211,13 +266,17 @@ function JobList() {
                     Details
                   </button>
                 </div>
-              </div>
-            ))}
-          </div>
+                </div>
+              ))) : <p style={{ textAlign: 'center', color: '#555', fontSize:'35px' }}>No such jobs.</p>
+              }
+            </div>
+          
+          {!loading && !jobs && <p className="flex justify-center items-center mx-auto h-3/4 text-gray-500 text-4xl">No new jobs posted yet.</p>}
         </div>
+        }
       </div>
     </div>
   );
 }
 
-export default JobList;
+export default UsersJobList;

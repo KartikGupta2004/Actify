@@ -1,0 +1,22 @@
+.recruit-cont {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
+  
+  .jd-cont, .applicant-cont, .selected-cont {
+    padding: 1rem;
+  }
+  
+  .text-lg {
+    font-size: 1.125rem;
+  }
+  
+  .text-gray-900 {
+    color: #1a202c;
+  }
+  
+  .flex {
+    display: flex;
+  }
+  

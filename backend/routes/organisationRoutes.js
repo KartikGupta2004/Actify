@@ -23,6 +23,8 @@ router.put("/update_id_org", authMiddleware, updateOrgController);
 //VIEW_Profile || GET
 router.get("/view_profile", authMiddleware, OrgInfoController);
 
+router.get("/view_profile/:id", authMiddleware, getOrgByIdController);
+
 //Upload_Logo
 router.post("/upload_logo", upload.single("file"), authMiddleware,uploadLogoController)
 

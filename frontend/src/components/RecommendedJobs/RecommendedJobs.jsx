@@ -2,29 +2,58 @@ import React, { useState, useEffect } from "react";
 import { HiOutlineBookmark } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Loader from "../Loader/Loader";
 function RecommendedJobs() {
   const [search, setSearch] = useState("");
   const [workingSchedule, setWorkingSchedule] = useState([]);
   const [employmentType, setEmploymentType] = useState([]);
   const [jobs, setJobs] = useState([]);
-  const token = localStorage.getItem("token");
+  const [loading, setLoading] = useState(false);
+  const [userAppliedJobs, setUserAppliedJobs] = useState([]);
+  const authToken = localStorage.getItem("authToken");
   const navigate = useNavigate();
   useEffect(() => {
-    const func = async () => {
+    setLoading(true);
+    const fetchJobs = async () => {
+    try{
       const res = await axios.get(
         "http://localhost:4000/api/v1/freelancer/recommendJobs",
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },
         }
       );
       setJobs(res.data.data);
       // .then(response => setJobs(response.data))
       // .catch(error => console.error('Error fetching jobs:', error));
-    };
-    func();
-  }, []);
+    } catch(error){
+      alert('Error happened')
+      window.location.reload();
+    }
+  }
+  const fetchUserProfile  = async () => {
+    try{
+    const userRes = await axios.get(
+      "http://localhost:4000/api/v1/freelancer/view_profile",
+      {
+        headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+      setUserAppliedJobs(userRes.data.data.appliedJobs);
+    // console.log(jobsRes.data);
+    } catch (error) {
+        // console.error("Error fetching profile:", error);
+        // setError("Failed to fetch profile data");
+    } finally{
+      setLoading(false);
+    }
+};
+    fetchJobs();
+    fetchUserProfile();
+  }, [authToken]);
 
   const handleWorkingScheduleChange = (e) => {
     const { value, checked } = e.target;
@@ -61,6 +90,13 @@ function RecommendedJobs() {
   }
 
   const filteredJobs = jobs.filter((job) => {
+    const isApplied = Array.isArray(userAppliedJobs) && userAppliedJobs.some(
+      (appliedJob) => appliedJob.jobId === job._id && 
+                      (appliedJob.status === "Applied" || appliedJob.status === "Not Selected" || appliedJob.status === "Working")
+    );
+  
+    const isUnseen = !isApplied || userAppliedJobs.some((appliedJob) => appliedJob.jobId === job._id && appliedJob.status === "Pending");
+
     const searchTerm = search.toLowerCase();
     const matchesSearch =
       searchTerm === "" ||
@@ -76,7 +112,7 @@ function RecommendedJobs() {
       employmentType.length === 0 ||
       employmentType.includes(job.location_requirements);
 
-    return matchesSearch && matchesWorkingSchedule && matchesEmploymentType;
+    return isUnseen && matchesSearch && matchesWorkingSchedule && matchesEmploymentType;
   });
   const DEFAULT_AVATAR = "https://ui-avatars.com/api/?name=Default+User";
   return (
@@ -150,8 +186,11 @@ function RecommendedJobs() {
             </button>
           </div>
 
+          {loading && 
+            <div className="flex justify-center items-center mx-auto h-screen"><Loader /></div>
+          }
           {/* Job Cards Grid */}
-          <div className="grid grid-cols-3 gap-8">
+          {!loading && <div className="grid grid-cols-3 gap-8">
             {filteredJobs.map((job) => (
               <div
                 key={job._id}
@@ -213,7 +252,7 @@ function RecommendedJobs() {
                 </div>
               </div>
             ))}
-          </div>
+          </div>}
         </div>
       </div>
     </div>

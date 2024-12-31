@@ -2,7 +2,6 @@
   display: flex;
   justify-content: space-between; /* Distribute space between items */
   align-items: flex-start; /* Align items to the top */
-  height: 100%; /* Full viewport height */
   background-color: white;
   width: 100%; /* Ensure it takes full width */
   padding: 20px; /* Add padding for spacing */
@@ -20,7 +19,7 @@
   background-color: white; /* Neutral background */
 }
 .object-fill {
-  height: 600px;
+  height: auto;
   width: 600px;
 }
 .profile-form-container {
@@ -92,6 +91,8 @@
 }
 
 /* Submit Button Styling */
+/* Base button styles */
+/* Base button styles */
 .button {
   background-color: green;
   color: white;
@@ -107,6 +108,42 @@
   background-color: #555;
 }
 
+/* Add button styles */
+.add-button {
+  background-color: #4CAF50; /* Light Green */
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  margin-top: 15px; /* Space above the button */
+  align-self: center;
+
+}
+
+.add-button:hover {
+  background-color: #45a049; /* Darker Green */
+}
+
+/* Remove button styles */
+.remove-button {
+  background-color: #f44336; /* Light Red */
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  margin-top: 15px; /* Space above the button */
+  align-self: center;
+
+}
+
+.remove-button:hover {
+  background-color: #da190b; /* Darker Red */
+}
+
 /* Image Styling */
 .profile-photo {
   max-width: 100%; /* Full width within the image container */
@@ -118,10 +155,10 @@
 
 /* Card Component */
 .card {
-  width: 100%; /* Full width of the container */
-  max-width: 400px; /* Adjust max-width to fit form */
+  width: 100%;
+  max-width: 400px; 
   padding: 20px;
-  max-height: 1000px; /* Add padding for spacing */
+  min-height: fit-content;
   background: #fff;
   border: 8px solid #000;
   box-shadow: 15px 15px 0 #000;
@@ -275,4 +312,10 @@
   50% {
     border-color: #4a90e2;
   }
+}
+
+.disabled-input {
+  background-color: #f0f0f0;
+  color: #999;
+  pointer-events: none;
 }

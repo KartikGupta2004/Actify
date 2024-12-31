@@ -3,15 +3,22 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "name is require"],
+    required: true,
   },
-  username: {
+  email: {
     type: String,
-    required: [true, "username is require"],
+    required: true,
+    unique: true,
   },
   password: {
     type: String,
-    required: [true, "password is require"],
+    required: function () { return this.authProvider !== 'google'; }, // Required only if not Google OAuth
+  },
+  authProvider: {
+    type: String,
+    enum: ['email', 'google'],
+    required: true,
+    default: 'email',
   },
   isAdmin: {
     type: Boolean,
@@ -25,6 +32,6 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  },{ timestamps: true });
+}, { timestamps: true });
 
 export const user = mongoose.model('user', userSchema);

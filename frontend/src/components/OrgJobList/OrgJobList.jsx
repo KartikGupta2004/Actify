@@ -2,29 +2,38 @@ import React, { useState, useEffect } from "react";
 import { HiOutlineBookmark } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-function OrgJobList() {
+import Loader from "../Loader/Loader";
+function OrgsJobList() {
   const [search, setSearch] = useState("");
   const [workingSchedule, setWorkingSchedule] = useState([]);
   const [employmentType, setEmploymentType] = useState([]);
   const [jobs, setJobs] = useState([]);
-  const token = localStorage.getItem("token");
+  const [loading, setLoading] = useState(false);
+  const authToken = localStorage.getItem("authToken");
+  const profile = localStorage.getItem("Profile") === "true" || false;
+
   const navigate = useNavigate();
   useEffect(() => {
-    const func = async () => {
+    setLoading(true);
+    const fetchJobs = async () => {
+      try{
       const res = await axios.get(
         "http://localhost:4000/api/v1/jobs/get_company_job",
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${authToken}`,
           },
         }
       );
-      console.log(res.data.jobs)
+      // console.log(res.data.jobs)
       setJobs(res.data.jobs);
-      // .then(response => setJobs(response.data))
-      // .catch(error => console.error('Error fetching jobs:', error));
+    } catch(error){
+        alert('Error Occured!')
+    } finally{
+      setLoading(false);
+    }
     };
-    func();
+      fetchJobs();
   }, []);
 
   const handleWorkingScheduleChange = (e) => {
@@ -79,12 +88,12 @@ function OrgJobList() {
 
     return matchesSearch && matchesWorkingSchedule && matchesEmploymentType;
   });
-  const DEFAULT_AVATAR = "https://ui-avatars.com/api/?name=Default+User";
+
   return (
-    <div className="text-black h-full bg-gray-100 py-10 px-6">
+    <div className="text-black h-fit bg-gray-100 py-10 px-6">
       <div className="flex h-full gap-8">
         {/* Left Part - Filters Section */}
-        <div className="w-1/4 bg-white rounded-lg shadow-md p-6 border border-gray-200">
+        <div className="w-1/4 bg-white rounded-lg shadow-md p-6 border border-gray-200 sticky top-[10px] max-h-fit overflow-y-auto">
           <p className="text-2xl font-bold mb-6">Filters</p>
 
           {/* Working Schedule Filter */}
@@ -134,8 +143,12 @@ function OrgJobList() {
 
         {/* Right Part - Display Jobs Section */}
         <div className="w-3/4">
+          {!profile && <p className="flex justify-center items-center mx-auto h-3/4 text-gray-500 text-4xl">No new jobs posted yet.</p>}
+          
+          {loading && <div className="flex justify-center items-center mx-auto h-3/4"><Loader /></div>}
+
           {/* Search Bar */}
-          <div className="flex justify-between mb-8">
+          {profile && !loading && <div className="flex justify-between mb-8">
             <input
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search..."
@@ -143,10 +156,10 @@ function OrgJobList() {
               name="text"
               type="text"
             />
-          </div>
+          </div>}
 
           {/* Job Cards Grid */}
-          <div className="grid grid-cols-3 gap-8">
+          {!loading && <div className="grid grid-cols-3 gap-8">
             {filteredJobs.map((job) => (
               <div
                 key={job._id}
@@ -171,7 +184,7 @@ function OrgJobList() {
                     <img
                       src={
                         job.logo ||
-                        `https://ui-avatars.com/api/?name=${job.company_description}`
+                        `https://ui-avatars.com/api/?name=${job.role}`
                       }
                       alt={`${job.company} logo`}
                       className="w-10 h-10 rounded-full object-cover"
@@ -190,7 +203,7 @@ function OrgJobList() {
                     ))}
                   </div>
                 </div>
-
+                    
                 {/* Job Details */}
                 <div className="flex justify-between items-center mt-4">
                   <div>
@@ -200,6 +213,12 @@ function OrgJobList() {
                     <p className="text-gray-500">{job.location_requirements}</p>
                   </div>
                   <button
+                    className="bg-green-500 text-white rounded-full px-4 py-2 hover:bg-green-600 transition-colors"
+                    onClick={() => navigate(`/editJob/${job._id}`)}
+                  >
+                    Edit
+                  </button>
+                  <button
                     className="bg-blue-500 text-white rounded-full px-4 py-2 hover:bg-blue-600 transition-colors"
                     onClick={() => navigate(`/recruit/${job._id}`)}
                   >
@@ -208,11 +227,11 @@ function OrgJobList() {
                 </div>
               </div>
             ))}
-          </div>
+          </div>}
         </div>
       </div>
     </div>
   );
 }
 
-export default OrgJobList;
+export default OrgsJobList;

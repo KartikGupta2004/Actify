@@ -1,0 +1,192 @@
+.updatejob-cont {
+  display: flex;
+  flex-direction: row;
+  font-family: "Poppins", sans-serif;
+  color: black;
+  padding: 2em;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  width: 100%;
+  height: 100vh; /* Full viewport height */
+  margin: 0 auto;
+  overflow: hidden; /* Prevent horizontal overflow */
+  box-sizing: border-box;
+}
+
+.update-job-container {
+  position: relative;
+}
+
+.loading-active main {
+  opacity: 0.3; /* Dims the page content */
+  pointer-events: none; /* Prevents interaction with the page */
+}
+
+.postjob-title {
+  display: inline-block;
+  font-size: 2em;
+  padding: 0.5em 1em;
+  font-weight: 800;
+  border-radius: 10px 10px 0px 10px;
+  background-color: #f5f5f5;
+}
+
+#updatejob-form {
+  display: flex;
+  flex-direction: column;
+  width: 70%; /* Occupy majority of the width */
+  justify-content: flex-start;
+  align-items: start;
+  gap: 1.5em;
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding-right: 1em; /* Add padding to avoid overlap with scrollbar */
+  height: 100%; /* Ensure it takes the full height of the container */
+  box-sizing: border-box;
+}
+
+#updatejob-form > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  width: 100%;
+}
+
+#updatejob-form label,
+.submit-section label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+#updatejob-form input[type="text"],
+#updatejob-form input[type="date"],
+#updatejob-form textarea,
+.submit-section input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #fff;
+  color: #333;
+  border-radius: 5px;
+}
+
+#updatejob-form textarea {
+  height: 100px;
+  resize: none;
+  overflow-y: auto;
+}
+
+.exp-level,
+.location-req {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.exp-level p,
+.location-req p {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.exp-level span,
+.location-req span {
+  margin-bottom: 10px;
+}
+
+.submit-section {
+  width: 30%; /* Occupy 30% of the container width */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: start;
+  gap: 2em;
+  padding: 1em;
+  box-sizing: border-box;
+  height: 100%; /* Ensure it takes the full height of the container */
+  overflow-y: auto; /* Enable vertical scrolling if necessary */
+}
+
+.submit-section div {
+  width: 100%; /* Ensure the contact information field takes full width */
+}
+
+.submit-button {
+  font-family: monospace;
+  font-size: larger;
+  font-weight: 800;
+  width: 100%;
+  padding: 10px;
+  background-color: #372bb2; /* Standard color */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #371bc2; /* Brighter shade for hover effect */
+}
+
+/* New styles for radio buttons */
+.radio-inputs {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border-radius: 0.5rem;
+  background-color: #eee;
+  box-sizing: border-box;
+  box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
+  padding: 0.25rem;
+  width: fit-content;
+  gap: 0.5rem;
+  font-size: smaller;
+}
+
+.radio-inputs .radio {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.radio-inputs .radio input {
+  display: none;
+}
+
+.radio-inputs .radio .name {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  border: none;
+  padding: 0.5rem 0.25rem;
+  color: rgba(51, 65, 85, 1);
+  transition: all 0.15s ease-in-out;
+}
+
+.radio-inputs .radio input:checked + .name {
+  background-color: #fff;
+  font-weight: 600;
+}
+
+#company_description {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #fff;
+  color: #333;
+  border-radius: 5px;
+  height: 100px;
+  resize: none;
+  overflow-y: auto;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}

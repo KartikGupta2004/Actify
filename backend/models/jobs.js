@@ -21,9 +21,23 @@ const jobSchema = new mongoose.Schema(
     },
     contact_information: String,
     company_description: String,
-    Applicants: [String],
+    Applicants: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Freelancer", // Reference to the Freelancer model
+      },
+    ],
+    acceptedApplicants: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Freelancer", // Stores accepted applicants
+      },
+    ],
     embeddings: [Number],
-    userId:String
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User", // Reference to the User model, assuming userId is linked to a User
+    },
   },
   { timestamps: true }
 );

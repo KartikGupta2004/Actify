@@ -4,23 +4,44 @@ const orgSchema = new mongoose.Schema(
   {
     userId: {
       type: String,
-      required: true,
+      required: true, // Unique ID for the organization user
     },
     name: {
       type: String,
-      required: true,
+      required: true, // Name of the organization
     },
     description: {
       type: String,
-      required: true,
-      unique: true,
+      required: true, // A brief description of the organization
     },
     roles: {
       type: String,
-      required: true,
+      required: true, // Roles the organization is offering (e.g., "Volunteer Coordinator", "Event Manager")
+    },
+    location: {
+      type: String,
+      required: true, // Location of the organization (can be city, state, or region)
+    },
+    contactInfo: {
+      phone: {
+        type: String,
+        required: true, // Organization's contact number
+      },
+      email: {
+        type: String,
+        required: true, // Organization's email address
+      },
+      website: {
+        type: String, // Optional: A link to the organization's website
+      },
+    },
+    socialLinks: {
+      twitter: { type: String },
+      linkedin: { type: String },
+      facebook: { type: String },
     },
     logo: {
-      type: Array,
+      type: String, // Link to the organization's logo image (can be uploaded to cloud storage)
       required: false,
     },
     notification: {

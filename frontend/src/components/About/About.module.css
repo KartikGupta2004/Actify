@@ -1,0 +1,128 @@
+.aboutContainer {
+    font-family: Arial, sans-serif;
+    color: #333;
+    padding: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #f2f2f2, #e6e6e6);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-size: 55px 55px;
+  margin-bottom: 30px;
+  }
+  
+  .heroSection {
+    text-align: center;
+    padding: 2rem 0;
+    background: #f0f9ff;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+  }
+  
+  .heroSection h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .heroSection p {
+    font-size: 1.2rem;
+    color: #555;
+  }
+  
+  .missionSection {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .missionSection h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .missionSection p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+  }
+  
+  .featuresSection {
+    text-align: center;
+  }
+  
+  .featuresSection h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+  
+  .featureCards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  
+  .featureCard {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .featureCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  .featureCard h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .featureCard p {
+    font-size: 0.95rem;
+    color: #555;
+  }
+  
+  .icon {
+    font-size: 2rem;
+    color: #4caf50;
+    margin-bottom: 1rem;
+  }
+  
+  .ctaSection {
+    text-align: center;
+    padding: 2rem 0;
+    background: #4caf50;
+    color: white;
+    border-radius: 8px;
+    margin-top: 2rem;
+  }
+  
+  .ctaSection h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .ctaSection p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .ctaButton {
+    background: white;
+    color: #4caf50;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .ctaButton:hover {
+    background: #388e3c;
+    color: white;
+    transform: scale(1.05);
+  }
+  

@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import "./AddJob.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Loader from "../Loader/Loader";
+
 const AddJob = () => {
-  const token = localStorage.getItem("token");
+  const authToken = localStorage.getItem("authToken");
+  const profile = localStorage.getItem("Profile") === "true" || false;
+  const [loading,setLoading] = useState(false);
   const [data, setData] = useState({
     role: "",
     job_description: "",
@@ -17,57 +21,89 @@ const AddJob = () => {
     company_description: "",
   });
 
-  const [error, setError] = useState(null);
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  const validateField = (name, value) => {
+    let error = "";
+    if(name == 'company_description'){
+      return;
+    }
+    if (!value.trim()) {
+      error = `${name.replace(/_/g, " ")} is required.`;
+    }
+    return error;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (
-      name === "project_duration" ||
-      name === "location_requirements" ||
-      name === "experience_level"
-    ) {
-      setError(null);
-    }
+
     setData({ ...data, [name]: value });
+
+    setErrors((prev) => ({ ...prev, [name]: validateField(name, value) }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!data.experience_level) {
-      setError(`Please enter the Experience Level`);
+
+    // Validate all fields
+    const newErrors = {};
+    Object.keys(data).forEach((key) => {
+      const error = validateField(key, data[key]);
+      if (error) {
+        newErrors[key] = error;
+      }
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
-    if (!data.project_duration) {
-      setError("Please enter the Project Duration");
-      return;
-    }
-    if (!data.location_requirements) {
-      setError("Please enter the Location Requirements");
-      return;
-    }
+
+    setLoading(true)
+  
     data.skills_required = data.skills_required.split(",");
-    console.log(data);
+    // console.log(data);
+
     try {
       const response = await axios.post(
         "http://localhost:4000/api/v1/jobs/create_job",
         { ...data },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authToken}`,
           },
         }
       );
-      console.log("done!");
-      console.log(response.data);
+      // console.log(response.data);
+      alert("Job Created!")
       navigate("/jobList");
     } catch (e) {
-      console.log("Error occured when trying to create job listing!");
-      console.error(e.message);
+      alert("Error occurred when trying to create job listing!");
+      // console.error(e.message);
+    } finally {
+      setLoading(false);
     }
   };
 
+  if(!profile){
+    return(
+      <div className='flex flex-col justify-center items-center my-5'>
+        <p className="text-red-500 font-bold">Create Profile to post jobs</p>
+        <button onClick={()=>{navigate('/createProfile')}} className="bg-green-700 text-white border-none px-3 py-2 cursor-pointer text-sm mt-4 hover:bg-[#555]">Create Profile</button>
+      </div>
+    )
+  }
   return (
-    <main>
-      <h1 className="postjob-title">Post a Job:</h1>
+    <>
+    <div className={`add-job-container ${loading ? "loading-active" : ""}`}>
+    {loading && (
+        <div className="flex absolute z-1000 justify-center items-center mx-auto h-screen w-full">
+          <Loader />
+        </div>
+      )}
+    <main className="-z-10">
+      <h1 className="postjob-title">Post a Job</h1>
       <section className="addjob-cont">
         <form action="" onSubmit={handleSubmit} id="addjob-form">
           <div>
@@ -78,9 +114,11 @@ const AddJob = () => {
               id="role"
               name="role"
               onChange={handleChange}
-              required
+              value={data.role}
             />
+            {errors.role && <p className="error-message">{errors.role}</p>}
           </div>
+
           <div>
             <label htmlFor="job_description">Job Description:</label>
             <textarea
@@ -88,8 +126,11 @@ const AddJob = () => {
               id="job_description"
               placeholder="Description"
               onChange={handleChange}
-              required
+              value={data.job_description}
             ></textarea>
+            {errors.job_description && (
+                  <p className="error-message">{errors.job_description}</p>
+                )}
           </div>
           <div>
             <label htmlFor="skills_required">Skills Required:</label>
@@ -97,11 +138,15 @@ const AddJob = () => {
               type="text"
               name="skills_required"
               id="skills_required"
-              placeholder="Skills"
+              placeholder="Comma-separated skills (e.g., HTML, CSS, JavaScript)"
               onChange={handleChange}
-              required
+              value={data.skills_required}
             />
+            {errors.skills_required && (
+                  <p className="error-message">{errors.skills_required}</p>
+                )}
           </div>
+
           <div>
             <label>Experience Level:</label>
             <div className="radio-inputs">
@@ -136,9 +181,12 @@ const AddJob = () => {
                 <span className="name">Senior Level</span>
               </label>
             </div>
+            {errors.experience_level && (
+                  <p className="error-message">{errors.experience_level}</p>
+                )}
           </div>
           <div>
-            <label>Project Duration</label>
+            <label>Project Duration:</label>
             <div className="radio-inputs">
               <label htmlFor="short-term" className="radio">
                 <input
@@ -181,6 +229,9 @@ const AddJob = () => {
                 <span className="name">Permanent</span>
               </label>
             </div>
+            {errors.project_duration && (
+                  <p className="error-message">{errors.project_duration}</p>
+                )}
           </div>
           <div>
             <label htmlFor="compensation">Compensation Details:</label>
@@ -188,9 +239,12 @@ const AddJob = () => {
               type="text"
               name="compensation"
               id="compensation"
+              placeholder="Compensation (e.g., Paid, Unpaid)"
               onChange={handleChange}
-              required
             />
+            {errors.compensation && (
+                  <p className="error-message">{errors.compensation}</p>
+                )}
           </div>
           <div>
             <label htmlFor="application_deadline">Application Deadline:</label>
@@ -199,11 +253,14 @@ const AddJob = () => {
               name="application_deadline"
               id="application_deadline"
               onChange={handleChange}
-              required
             />
+            {errors.application_deadline && (
+                  <p className="error-message">{errors.application_deadline}</p>
+                )}
           </div>
+
           <div>
-            <label htmlFor="">Location:</label>
+            <label>Location:</label>
             <div className="radio-inputs">
               <label htmlFor="remote" className="radio">
                 <input
@@ -236,8 +293,12 @@ const AddJob = () => {
                 <span className="name">Hybrid</span>
               </label>
             </div>
+            {errors.location_requirements && (
+                  <p className="error-message">{errors.location_requirements}</p>
+                )}
           </div>
         </form>
+
         <section className="submit-section">
           <div>
             <label htmlFor="contact_information">Contact Information:</label>
@@ -245,32 +306,33 @@ const AddJob = () => {
               type="text"
               name="contact_information"
               id="contact_information"
+              placeholder="Contact Email or Phone"
               form="addjob-form"
               onChange={handleChange}
-              required
             />
+            {errors.contact_information && (
+                  <p className="error-message">{errors.contact_information}</p>
+                )}
           </div>
           <div>
             <label htmlFor="company_description">Company Description:</label>
             <textarea
               name="company_description"
               id="company_description"
+              placeholder="Brief description of the organization"
               form="addjob-form"
-              onChange={handleChange}
-              required
+              onChange={handleChange}              
             />
           </div>
-          {error && (
-            <p className="font-mono text-red-600 bg-red-200 border-red-600 w-full text-center rounded px-2 py-1">
-              {error}
-            </p>
-          )}
+          
           <button type="submit" form="addjob-form" className="submit-button">
-            POST JOB
+            {!loading ? 'POST JOB' : 'POSTING JOB...'}
           </button>
         </section>
       </section>
     </main>
+    </div>
+    </>
   );
 };
 

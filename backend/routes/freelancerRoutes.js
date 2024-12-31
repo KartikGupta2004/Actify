@@ -1,7 +1,6 @@
 import express from "express";
-import { applyFreelancerController,getFreelancerbyid, FreelancerInfoController, updateProfileController,uploadImageController, uploadResumeController, getRecommendedJobs } from "../controllers/freelancerCtrl.js";
+import { applyFreelancerController,getFreelancerbyid, FreelancerInfoController, updateProfileController,uploadImageController, uploadCertificateController, getRecommendedJobs } from "../controllers/freelancerCtrl.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
-import { recommendJobs } from "../controllers/recommendJobs.js"; 
 import upload from '../middlewares/multer.js';
 const router = express.Router();
 
@@ -14,14 +13,14 @@ router.get("/view_profile", authMiddleware, FreelancerInfoController);
 
 router.get("/view_profile/:id", authMiddleware, getFreelancerbyid);
 
-//Update_Profile || GET
+//Update_Profile || PUT
 router.put("/update_profile", authMiddleware, updateProfileController);
 
 //Upload_Image
 router.post("/upload_image", upload.single("file"), authMiddleware,uploadImageController)
 
-//Upload_Resume
-router.post("/upload_resume", upload.single("file"), authMiddleware,uploadResumeController);
+//Upload_Certificate
+router.post("/upload_certificate", upload.single("file"), authMiddleware,uploadCertificateController);
 router.get("/recommendJobs", authMiddleware, getRecommendedJobs );
 
 export { router };

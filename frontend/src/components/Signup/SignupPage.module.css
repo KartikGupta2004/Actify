@@ -128,3 +128,65 @@
     transform: translate(0);
   }
 }
+
+.oauthButton {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 5px;
+    /* margin: 50px auto 0 auto; */
+  padding: auto 15px 15px auto;
+  width: 250px;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid var(#372bb2);
+  background-color: var(#372bb2);
+  border-color: #372bb2;
+  border-width: 2px;
+  -webkit-box-shadow: 4px 4px var(#372bb2);
+          box-shadow: 4px 4px var(#372bb2);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--font-color);
+  cursor: pointer;
+  -webkit-transition: all 250ms;
+  transition: all 250ms;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  margin-bottom:10px;
+}
+
+.oauthButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  background-color: #372bb2;
+  z-index: -1;
+  -webkit-box-shadow: 4px 8px 19px -3px rgba(#372bb2);
+  box-shadow: 4px 8px 19px -3px rgba(#372bb2);
+  -webkit-transition: all 250ms;
+  transition: all 250ms;
+}
+
+.oauthButton:hover {
+  color: #e8e8e8;
+}
+
+.oauthButton:hover::before {
+  width: 100%;
+}
+
+.icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}

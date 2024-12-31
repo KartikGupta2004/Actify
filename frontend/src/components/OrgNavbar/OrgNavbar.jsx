@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import './OrgNavbar.css'
 
 const OrgNavbar = () => {
   const navigate = useNavigate();
   const [isProfileCreated, setIsProfileCreated] = useState(false);
 
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("authToken");
     localStorage.removeItem("userType");
     navigate("/");
     window.location.reload();
@@ -19,7 +20,7 @@ const OrgNavbar = () => {
         "http://localhost:4000/api/v1/org/view_profile",
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },
         }
       );
@@ -28,11 +29,13 @@ const OrgNavbar = () => {
       const data = response.data.data;
       if (response.status === 200 && data && data.name && data.description) {
         setIsProfileCreated(true);
+        localStorage.setItem("Profile" , true);
       } else {
         setIsProfileCreated(false);
+        localStorage.setItem("Profile" , false);
       }
     } catch (error) {
-      console.error("Error checking profile status:", error);
+      // console.error("Error checking profile status:", error);
       setIsProfileCreated(false);
     }
   };
@@ -48,16 +51,16 @@ const OrgNavbar = () => {
         <div className="relative flex items-center justify-between">
           <div className="flex-shrink-0">
             <Link
-              to="/home"
+              to="/"
               className="flex rounded outline-none text-2xl font-bold focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
             >
-              JOBCONNECT
+              Actify
             </Link>
           </div>
 
           <div className="hidden md:flex md:items-center md:justify-center md:space-x-10">
             <Link
-              to="/orgJobList"
+              to="/jobList"
               className="text-base font-medium text-gray-900 hover:text-opacity-50"
             >
               Manage Listings
@@ -72,14 +75,14 @@ const OrgNavbar = () => {
 
             {isProfileCreated && (
               <Link
-                to="/viewOrgProfile"
+                to="/viewProfile"
                 className="text-base font-medium text-gray-900 hover:text-opacity-50"
               >
                 Profile
               </Link>
             )}
 
-            {!isProfileCreated &&(<Link to="/orgProfile" className="text-base font-medium text-gray-900 hover:text-opacity-50">
+            {!isProfileCreated &&(<Link to="/createProfile" className="text-base font-medium text-gray-900 hover:text-opacity-50">
               Create Profile
             </Link>)}
           </div>
@@ -87,9 +90,9 @@ const OrgNavbar = () => {
           <div className="hidden md:flex">
             <button
               onClick={logout}
-              className="inline-flex items-center justify-center px-6 py-3 text-base font-bold text-white bg-gray-900 rounded hover:bg-gray-600"
+              className="logout-button"
             >
-              Logout
+              LOGOUT
             </button>
           </div>
         </div>

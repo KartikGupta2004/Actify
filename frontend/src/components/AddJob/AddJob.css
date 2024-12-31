@@ -13,6 +13,15 @@
   box-sizing: border-box;
 }
 
+.add-job-container {
+  position: relative;
+}
+
+.loading-active main {
+  opacity: 0.3; /* Dims the page content */
+  pointer-events: none; /* Prevents interaction with the page */
+}
+
 .postjob-title {
   display: inline-block;
   font-size: 2em;
@@ -174,4 +183,10 @@
   height: 100px;
   resize: none;
   overflow-y: auto;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 4px;
 }

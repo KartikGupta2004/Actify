@@ -1,36 +1,75 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const JobPage = () => {
   const { id } = useParams(); // Use  job ID from URL params
-  const token = localStorage.getItem("token"); // Auth token
+  const authToken = localStorage.getItem("authToken"); // Auth Token
   const [job, setJob] = useState({});
   const [isApplying, setIsApplying] = useState(false); // To handle apply button state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hasApplied, setHasApplied] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const profile = localStorage.getItem("Profile") === "true" || false;
 
   // Fetch the job details
   useEffect(() => {
+
     const fetchJob = async () => {
       try {
         const res = await axios.get(
           `http://localhost:4000/api/v1/jobs/get_id_job/${id}`,
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${authToken}`,
             },
           }
         );
-        console.log(res)
+        // console.log(res)
         setJob(res.data);
       } catch (error) {
         console.error("Error fetching job:", error);
       }
     };
+
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:4000/api/v1/freelancer/view_profile",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            },
+          }
+        );
+        // console.log(response.data.data)
+        response.data.data.appliedJobs.map((job)=>{
+          if(job.jobId === id){
+            setHasApplied(true);
+          }
+      });
+      } catch (error) {
+        // console.error("Error fetching profile:", error);
+        setError("Failed to fetch profile data");
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchJob();
-  }, [id, token]);
+    if(profile){
+      fetchUserData();
+    }
+  }, [id, authToken]);
+
+  const handleCancelApply = () => {
+    setIsModalOpen(false);
+  };
 
   // Function to handle job application
-  const applyForJob = async () => {
+  const handleConfirmApply = async () => {
+    setIsModalOpen(false)
     setIsApplying(true);
     try {
       const applicationData = {
@@ -39,11 +78,12 @@ const JobPage = () => {
 
       const res = await axios.post('http://localhost:4000/api/v1/freelancejobs/apply', applicationData, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${authToken}`,
         },
       });
 
       alert("Application submitted successfully!");
+      navigate('/myjobs')
     } catch (error) {
       console.error("Error submitting application:", error);
       alert("Failed to apply for the job.");
@@ -54,6 +94,21 @@ const JobPage = () => {
 
   return (
     <div className="bg-gray-50">
+      {isModalOpen && (
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+              <div className="bg-white p-5 rounded-lg shadow-lg max-w-sm w-full">
+                <h2 className="text-xl font-bold mb-4">Confirm Application</h2>
+                <div className="mt-4 flex justify-between">
+                  <button onClick={handleConfirmApply} className="bg-green-500 text-white px-4 py-2 rounded-md">
+                    OK
+                  </button>
+                  <button onClick={handleCancelApply} className="bg-red-500 text-white px-4 py-2 rounded-md">
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
   <section className="relative py-12 sm:py-16 lg:pb-40">
     <div className="relative px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 gap-y-4 lg:items-center lg:grid-cols-2 xl:grid-cols-2">
@@ -106,13 +161,24 @@ const JobPage = () => {
             <p className="text-2xl text-gray-600">{job.contact_information}</p>
           </div>
 
-          <button
-            onClick={applyForJob}
-            disabled={isApplying}
-            className="inline-flex px-8 py-4 mt-8 text-2xl font-bold text-white bg-gray-900 rounded hover:bg-gray-600"
-          >
-            {isApplying ? "Applying..." : "Apply"}
-          </button>
+          {profile ? (<button
+                onClick={() => setIsModalOpen(true)}
+                disabled={isApplying || hasApplied}
+                className={`inline-flex px-8 py-4 mt-8 text-2xl font-bold text-white rounded ${
+                  hasApplied || isApplying
+                    ? "bg-gray-500 cursor-not-allowed"
+                    : "bg-gray-900 hover:bg-gray-600"
+                }`}
+              >
+                {isApplying ? "Applying..." : hasApplied ? "Already Applied" : "Apply"}
+              </button>)
+              : 
+              (<Link to='/createProfile'>
+                <button className="inline-flex px-2 py-2 mt-8 text-2xl font-bold text-white rounded bg-gray-900 hover:bg-gray-600">
+                    Create Profile to Apply
+                </button>
+              </Link>)  
+          }
 
           <div className="mt-8">
             <blockquote className="mt-6">

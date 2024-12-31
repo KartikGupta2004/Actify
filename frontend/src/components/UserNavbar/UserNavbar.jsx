@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./UserNavbar.css"
 const UserNavbar = () => {
   const navigate = useNavigate();
   const [isProfileCreated, setIsProfileCreated] = useState(false);
 
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("authToken");
     localStorage.removeItem("userType");
+    localStorage.removeItem("Profile")
     navigate("/");
     window.location.reload();
   };
@@ -18,19 +20,22 @@ const UserNavbar = () => {
         "http://localhost:4000/api/v1/freelancer/view_profile",
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },
         }
       );
 
-      if (response.status >= 200 && response.status < 300) {
+      if (response.status === 200) {
         setIsProfileCreated(true);
+        localStorage.setItem("Profile" , true);
       } else {
         setIsProfileCreated(false);
+        localStorage.setItem("Profile" , false);
       }
     } catch (error) {
-      console.error("Error checking profile status:", error);
+      // console.error("Error checking profile status:", error);
       setIsProfileCreated(false);
+      localStorage.setItem("Profile" , false);
     }
   };
 
@@ -44,10 +49,10 @@ const UserNavbar = () => {
         <div className="relative flex items-center justify-between">
           <div className="flex-shrink-0">
             <Link
-              to="/home"
+              to="/"
               className="flex rounded outline-none text-2xl font-bold focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
             >
-              JOBCONNECT
+              Actify
             </Link>
           </div>
 
@@ -72,10 +77,10 @@ const UserNavbar = () => {
 
           <div className="hidden md:flex md:items-center md:justify-center md:space-x-10 md:absolute md:inset-y-0 md:left-1/2 md:-translate-x-1/2 lg:space-x-16">
             <Link
-              to="/joblist"
+              to="/jobList"
               className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
             >
-              Find Jobs
+              Find Opportunities
             </Link>
 
             <Link
@@ -87,7 +92,7 @@ const UserNavbar = () => {
 
             {isProfileCreated && (
               <Link
-                to="/userProfile"
+                to="/viewProfile"
                 className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
               >
                 Profile
@@ -104,10 +109,10 @@ const UserNavbar = () => {
 
           <div className="hidden md:flex">
             <button
-              className="inline-flex items-center justify-center px-6 py-3 text-base font-bold leading-7 text-white transition-all duration-200 bg-gray-900 border border-transparent rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+              className="logout"
               onClick={logout}
             >
-              Logout
+              LOGOUT
             </button>
           </div>
         </div>

@@ -5,21 +5,20 @@ import fs from "fs";
 import { generateEmbeddings } from "../embeddings/embeddings.js";
 import { recommendJobs } from "./recommendJobs.js";
 import { Job } from "../models/jobs.js";
+import mongoose from 'mongoose';
 // Create Freelancer
 const applyFreelancerController = async (req, res) => {
   try {
-    console.log("hello boi", req.body);
-
     // Extract skills and join them into a single string
-    const { skills, ...otherData } = req.body; // Destructure skills and other data from request body
+    const { preferredCauses, skills, ...updateData } = req.body; // Destructure skills and other data from request body
     // const skillsJoined = skills.join(" "); // Join skills into a single string
     const skillsJoined = skills;
 
     // Generate embeddings for the joined skills string
-    const skillsEmbeddings = await generateEmbeddings(skillsJoined);
+    const embeddings = await generateEmbeddings(skillsJoined + preferredCauses);
 
     // Combine other data with the generated embeddings
-    const newAccData = { ...otherData, skills, embeddings: skillsEmbeddings };
+    const newAccData = { ...updateData, skills, preferredCauses, embeddings: embeddings };
 
     // Create a new freelancer entry with the data
     const newFreelancer = await Freelancer.create(newAccData);
@@ -56,11 +55,12 @@ const getFreelancerbyid = async (req, res) => {
     if (!freelancer) {
       return res.status(404).json({ message: "Freelancer not found" });
     }
-    res.status(200).json(freelancer); // Fixed to return freelancer data
+    res.status(200).json({ data: freelancer });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // Details Freelancer
 const FreelancerInfoController = async (req, res) => {
@@ -90,14 +90,14 @@ const FreelancerInfoController = async (req, res) => {
 // Update Profile
 const updateProfileController = async (req, res) => {
   try {
-    const { userId, skills, ...updateData } = req.body; // Destructure userId, skills, and other update data
+    const { preferredCauses, userId, skills, ...updateData } = req.body; // Destructure userId, skills, and other update data
 
     // Generate embeddings for the updated skills string
     const skillsJoined = skills; // Skills already in a desired format
-    const skillsEmbeddings = await generateEmbeddings(skillsJoined);
+    const embeddings = await generateEmbeddings(skillsJoined + preferredCauses);
 
     // Combine update data with the new embeddings
-    const updatedData = { ...updateData, skills, embeddings: skillsEmbeddings };
+    const updatedData = { ...updateData, skills, preferredCauses, embeddings: embeddings };
 
     const freelancer = await Freelancer.findOneAndUpdate(
       { userId },
@@ -145,21 +145,21 @@ const uploadImageController = async (req, res) => {
   }
 };
 
-const uploadResumeController = async (req, res) => {
+const uploadCertificateController = async (req, res) => {
   try {
     const file = req.file;
     console.log("Uploading:", file.originalname);
-    const resume = await UploadOnCloudinary(file.path);
-    console.log("Uploaded resume:", resume);
+    const certificate = await UploadOnCloudinary(file.path);
+    console.log("Uploaded certificate:", certificate);
 
     res.status(200).json({
-      message: "Resume uploaded successfully",
-      resumeID: resume.public_id,
-      resumeURL: resume.secure_url,
+      message: "Certificate uploaded successfully",
+      certificateID: certificate.public_id,
+      certificateURL: certificate.secure_url,
     });
   } catch (err) {
-    console.error("Error uploading resume:", err);
-    res.status(500).json({ message: "Failed to upload resume", error: err });
+    console.error("Error uploading certificate:", err);
+    res.status(500).json({ message: "Failed to upload certificate", error: err });
   }
 };
 
@@ -197,6 +197,6 @@ export {
   FreelancerInfoController,
   updateProfileController,
   uploadImageController,
-  uploadResumeController,
+  uploadCertificateController,
   getRecommendedJobs,
 };
