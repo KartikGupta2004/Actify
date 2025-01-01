@@ -103,7 +103,7 @@ For frontend execute the command:<br>
 
 ## 📱Screenshots <a id="screenshots"></a>
 
-[Screenshots of the Project](https://drive.google.com/file/d/1GwupswH9Ho_wfyDuJLaVYtx4znGka8to/view?usp=sharing)
+[Screenshots of the Project](https://drive.google.com/drive/folders/1FEeyNi501ossU48ROYYBavZgLmrf_XuO?usp=sharing)
 
 
 Let me know if you need further refinements! 😁☺️
