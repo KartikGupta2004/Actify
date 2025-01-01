@@ -1,21 +1,22 @@
 <h1 align="center">
-  FreeLanza- World's #1 Job Recruiting Platform
+  Actify - Connecting Volunteers with Service Opportunities
 </h1>
 
 <div align="center">
-   <strong>FreeLanza</strong> - Organise your Work & Life<br>
-  Become Focused, Organized, and Calm with ToDo.<br> <br>
+   <strong>Actify</strong> - Bridging the Gap Between Organizations and Volunteers<br>
+   Find Opportunities, Make an Impact, and Transform Communities.<br><br>
 </div>
 <hr>
 
 ## Table of Contents
 
 - [Description](#description)
-- [Links](#links)
+- [Key Features](#features)
 - [Tech Stack](#tech-stack)
+- [Additional Tools](#add-tools)
 - [Progress](#progress)
 - [Future Scope](#future-scope)
-- [Applications](#applications)
+- [Applications](#application)
 - [Project Setup](#project-setup)
 - [Usage](#usage)
 - [Screenshots](#screenshots)
@@ -23,13 +24,14 @@
 
 ## 📝Description <a id="description"></a>
 
-A dynamic platform where employers can post job opportunities and connect with skilled freelancers. Browse profiles, review portfolios, and hire the right talent for your projects.
+Actify is a dynamic platform designed to connect volunteers with organizations offering service opportunities. It addresses the fragmentation, inefficiency, and lack of personalization in current volunteer matching systems, providing a centralized and streamlined solution.
 
-## 🔗Links <a id="links"></a>
+## 📝Key Features <a id="features"></a>
 
-- [GitHub Repository](https://github.com/KartikGupta2004/ToDo-List)
-<!-- - [Demo Video](https://drive.google.com/drive/folders/1-7PPo7TUaF-L6DGlMSSJ0DKw4iizCcOr)-->
-- [Drive Link to Screenshots of the project](https://drive.google.com/file/d/1GwupswH9Ho_wfyDuJLaVYtx4znGka8to/view?usp=sharing)
+- Match volunteers with service opportunities based on skills, interests, and location.
+- Enable organizations to post, edit, and manage opportunities effectively.
+- Notify volunteers of new opportunities that align with their profiles.
+- Facilitate profile creation and management for both volunteers and organizations.
 
 ## 🤖Tech-Stack <a id="tech-stack"></a>
 
@@ -45,26 +47,38 @@ A dynamic platform where employers can post job opportunities and connect with s
 #### Database
 - MongoDB<a href="https://www.mongodb.org/" title="MongoDB"><img src="https://github.com/get-icon/geticon/raw/master/icons/mongodb-icon.svg" alt="MongoDB" width="21px" height="21px"></a>
 
+#### Additional Tools <a id="add-tools"></a>
+
+- **TensorFlow.js**: For developing a recommendation system.
+- **Google Maps API**: For location-based services.
+- **Email/SMS APIs**: For sending notifications and alerts.
+  
 ## 📈Progress <a id="progress"></a>
 
 Fully Implemented features of the project:
 
-- [x] Login and signup page for both freelancers and organizations
-- [x] Dashboard for freelancers to view and apply for available jobs
-- [x] Dashboard for Organizations to post new jobs and recruit freelancers
-- [x] Allows users to create/update profiles
-- [x] AI based recommender systems to search jobs based on your skills
+- [x] User registration and authentication for both volunteers and organizations.
+- [x] Profile management for volunteers and organizations.
+- [x] Service opportunity management, including posting, editing, and deleting opportunities.
+- [x] Notification system to alert volunteers about opportunities that match their profiles.
+- [x] AI-based recommendation system for personalized volunteer matching.
 
 ## 🔮Future Scope <a id="future-scope"></a>
 
-- Implementing ESCROW accounts to manage payments
-- Create a chat interface for freelancers to interact and collaborate with organizers
+- Integration of real-time chat features for seamless communication between volunteers and organizations.
+- Implementation of a feedback and rating system to enhance trust and accountability.
+- Advanced analytics dashboard for organizations to track engagement an
 
+## 🚀Applications <a id="application"></a>
+
+- **Non-profits and NGOs**: To recruit volunteers for various initiatives.
+- **Community groups**: To organize and manage service projects efficiently.
+- **Volunteers**: To discover and apply for opportunities tailored to their skills, interests, and location
 
 ## 🛠Project Setup <a id="project-setup"></a>
 
 First step is to clone the repository <br>
-``` https://github.com/divyannshu/SIH-2024-CodeCrafters- ```
+``` https://github.com/KartikGupta2004/Actify- ```
 
 Have the latest version of node js and react app.
 ```
@@ -90,4 +104,7 @@ For frontend execute the command:<br>
 ## 📱Screenshots <a id="screenshots"></a>
 
 [Screenshots of the Project](https://drive.google.com/file/d/1GwupswH9Ho_wfyDuJLaVYtx4znGka8to/view?usp=sharing)
+
+
+Let me know if you need further refinements! 😁☺️
 
