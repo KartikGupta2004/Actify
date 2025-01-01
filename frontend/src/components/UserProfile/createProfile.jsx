@@ -62,7 +62,6 @@ const countryCodeLengths = {
   "+46": 9,  // Sweden
   "+82": 10, // South Korea
   "+65": 8,  // Singapore
-  "+34": 9,  // Spain
   "+351": 9, // Portugal
   "+90": 10, // Turkey
   "+98": 10, // Iran
