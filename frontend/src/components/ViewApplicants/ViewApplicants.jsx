@@ -22,7 +22,7 @@ const ViewApplicants = () => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `http://localhost:4000/api/v1/jobs/get_id_job/${id}`,
+        `https://actify-backend-rubx.onrender.com/api/v1/jobs/get_id_job/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -44,7 +44,7 @@ const ViewApplicants = () => {
       try {
         const applicantPromises = job.Applicants.map(async (applicantId) => {
           return axios
-            .get(`http://localhost:4000/api/v1/freelancer/view_profile/${applicantId}`, {
+            .get(`https://actify-backend-rubx.onrender.com/api/v1/freelancer/view_profile/${applicantId}`, {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("authToken")}`,
               },
@@ -98,7 +98,7 @@ const ViewApplicants = () => {
   const handleRecruit = async (applicantId) => {
     try {
       await axios.post(
-        `http://localhost:4000/api/v1/freelancejobs/${job._id}/update_applicant_status`,
+        `https://actify-backend-rubx.onrender.com/api/v1/freelancejobs/${job._id}/update_applicant_status`,
         {
           applicantId,
           status: "Accepted",
@@ -119,7 +119,7 @@ const ViewApplicants = () => {
   const handleReject = async (applicantId) => {
     try {
       await axios.post(
-        `http://localhost:4000/api/v1/freelancejobs/${job._id}/update_applicant_status`,
+        `https://actify-backend-rubx.onrender.com/api/v1/freelancejobs/${job._id}/update_applicant_status`,
         {
           applicantId,
           status: "Rejected",

@@ -87,7 +87,7 @@ function SignupPage() {
 
           try {
             // Send the data to the backend for registration or login
-            axios.post("http://localhost:4000/api/v1/user/register", data)
+            axios.post("https://actify-backend-rubx.onrender.com/api/v1/user/register", data)
               .then((res) => {
                 // console.log(res.data)
                 localStorage.setItem("authToken", res.data.token);
@@ -125,7 +125,7 @@ function SignupPage() {
     }
 
     try {
-      const res = await axios.post("http://localhost:4000/api/v1/user/register", {
+      const res = await axios.post("https://actify-backend-rubx.onrender.com/api/v1/user/register", {
         ...formData,
         authProvider: "email",
       });

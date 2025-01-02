@@ -20,7 +20,7 @@ const JobPage = () => {
     const fetchJob = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:4000/api/v1/jobs/get_id_job/${id}`,
+          `https://actify-backend-rubx.onrender.com/api/v1/jobs/get_id_job/${id}`,
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -37,7 +37,7 @@ const JobPage = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/api/v1/freelancer/view_profile",
+          "https://actify-backend-rubx.onrender.com/api/v1/freelancer/view_profile",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -76,7 +76,7 @@ const JobPage = () => {
         jobId: id
       };
 
-      const res = await axios.post('http://localhost:4000/api/v1/freelancejobs/apply', applicationData, {
+      const res = await axios.post('https://actify-backend-rubx.onrender.com/api/v1/freelancejobs/apply', applicationData, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },

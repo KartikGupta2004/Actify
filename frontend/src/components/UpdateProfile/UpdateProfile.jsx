@@ -112,7 +112,7 @@ const UpdateProfileUser = () => {
     const fetchProfileData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/api/v1/freelancer/view_profile",
+          "https://actify-backend-rubx.onrender.com/api/v1/freelancer/view_profile",
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -293,7 +293,7 @@ const UpdateProfileUser = () => {
     formData.append("file", certificate);
     try {
       const upload = await axios.post(
-        "http://localhost:4000/api/v1/freelancer/upload_certificate",
+        "https://actify-backend-rubx.onrender.com/api/v1/freelancer/upload_certificate",
         formData,
         {
           headers: {
@@ -326,7 +326,7 @@ const UpdateProfileUser = () => {
       formData.append("file", photo);
       try {
         const upload = await axios.post(
-          "http://localhost:4000/api/v1/freelancer/upload_image",
+          "https://actify-backend-rubx.onrender.com/api/v1/freelancer/upload_image",
           formData,
           {
             headers: {
@@ -405,7 +405,7 @@ const UpdateProfileUser = () => {
         languages:formattedLanguages, // Store languages as a string
       };
 
-      const response = await axios.put("http://localhost:4000/api/v1/freelancer/update_profile", formData, {
+      const response = await axios.put("https://actify-backend-rubx.onrender.com/api/v1/freelancer/update_profile", formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           "Content-Type": "application/json",

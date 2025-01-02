@@ -103,7 +103,7 @@ const CreateProfileUser = () => {
     const fetchProfileData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/api/v1/user/getUserData",
+          "https://actify-backend-rubx.onrender.com/api/v1/user/getUserData",
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -268,7 +268,7 @@ const CreateProfileUser = () => {
     formData.append("file", certificate);
     try {
       const upload = await axios.post(
-        "http://localhost:4000/api/v1/freelancer/upload_certificate",
+        "https://actify-backend-rubx.onrender.com/api/v1/freelancer/upload_certificate",
         formData,
         {
           headers: {
@@ -297,7 +297,7 @@ const CreateProfileUser = () => {
     formData.append("file", photo);
     try {
       const upload = await axios.post(
-        "http://localhost:4000/api/v1/freelancer/upload_image",
+        "https://actify-backend-rubx.onrender.com/api/v1/freelancer/upload_image",
         formData,
         {
           headers: {
@@ -367,7 +367,7 @@ const CreateProfileUser = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:4000/api/v1/freelancer/profile",
+        "https://actify-backend-rubx.onrender.com/api/v1/freelancer/profile",
         formData,
         {
           headers: {

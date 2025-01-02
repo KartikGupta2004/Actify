@@ -86,7 +86,7 @@ const CreateProfileOrg = () => {
     const fetchProfileData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/api/v1/user/getUserData",
+          "https://actify-backend-rubx.onrender.com/api/v1/user/getUserData",
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -120,7 +120,7 @@ const CreateProfileOrg = () => {
     formData.append("file", logo);
     try {
       const upload = await axios.post(
-        "http://localhost:4000/api/v1/org/upload_logo",
+        "https://actify-backend-rubx.onrender.com/api/v1/org/upload_logo",
         formData,
         {
           headers: {
@@ -254,7 +254,7 @@ const CreateProfileOrg = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:4000/api/v1/org/create_org",
+        "https://actify-backend-rubx.onrender.com/api/v1/org/create_org",
         formData,
         {
           headers: {

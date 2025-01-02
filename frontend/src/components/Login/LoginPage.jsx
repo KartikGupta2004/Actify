@@ -48,7 +48,7 @@ function LoginPage() {
 
           try {
             axios
-              .post("http://localhost:4000/api/v1/user/signin", data)
+              .post("https://actify-backend-rubx.onrender.com/api/v1/user/signin", data)
               .then((res) => {
                 localStorage.setItem("authToken", res.data.token);
                 localStorage.setItem("userType", res.data.userType);
@@ -90,7 +90,7 @@ function LoginPage() {
     }
 
     try {
-      const res = await axios.post("http://localhost:4000/api/v1/user/signin", {
+      const res = await axios.post("https://actify-backend-rubx.onrender.com/api/v1/user/signin", {
         password,
         email,
         role,

@@ -67,7 +67,7 @@ const AddJob = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/jobs/create_job",
+        "https://actify-backend-rubx.onrender.com/api/v1/jobs/create_job",
         { ...data },
         {
           headers: {

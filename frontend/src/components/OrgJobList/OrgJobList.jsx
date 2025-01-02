@@ -18,7 +18,7 @@ function OrgsJobList() {
     const fetchJobs = async () => {
       try{
       const res = await axios.get(
-        "http://localhost:4000/api/v1/jobs/get_company_job",
+        "https://actify-backend-rubx.onrender.com/api/v1/jobs/get_company_job",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,

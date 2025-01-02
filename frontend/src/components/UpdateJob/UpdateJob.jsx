@@ -42,7 +42,7 @@ const UpdateJob = () => {
       setFetching(true);
       try {
         const response = await axios.get(
-          `http://localhost:4000/api/v1/jobs/get_id_job/${jobId}`, // Fetch specific job by ID
+          `https://actify-backend-rubx.onrender.com/api/v1/jobs/get_id_job/${jobId}`, // Fetch specific job by ID
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -111,7 +111,7 @@ const UpdateJob = () => {
     
     try {
       const response = await axios.put(
-        `http://localhost:4000/api/v1/jobs/update_id_job/${jobId}`,
+        `https://actify-backend-rubx.onrender.com/api/v1/jobs/update_id_job/${jobId}`,
         updatedData,
         {
           headers: {

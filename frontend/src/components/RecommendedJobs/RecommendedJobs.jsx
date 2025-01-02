@@ -17,7 +17,7 @@ function RecommendedJobs() {
     const fetchJobs = async () => {
     try{
       const res = await axios.get(
-        "http://localhost:4000/api/v1/freelancer/recommendJobs",
+        "https://actify-backend-rubx.onrender.com/api/v1/freelancer/recommendJobs",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -35,7 +35,7 @@ function RecommendedJobs() {
   const fetchUserProfile  = async () => {
     try{
     const userRes = await axios.get(
-      "http://localhost:4000/api/v1/freelancer/view_profile",
+      "https://actify-backend-rubx.onrender.com/api/v1/freelancer/view_profile",
       {
         headers: {
             Authorization: `Bearer ${authToken}`,

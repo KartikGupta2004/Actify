@@ -18,7 +18,7 @@ const ViewProfileByOrg = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/api/v1/freelancer/view_profile/${id}`,
+          `https://actify-backend-rubx.onrender.com/api/v1/freelancer/view_profile/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("authToken")}`,

@@ -21,7 +21,7 @@ function UsersJobList() {
       setLoading(true);
       try{
       const jobsRes = await axios.get(
-        "http://localhost:4000/api/v1/jobs/get_all_job",
+        "https://actify-backend-rubx.onrender.com/api/v1/jobs/get_all_job",
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -44,7 +44,7 @@ function UsersJobList() {
     const fetchUserProfile  = async () => {
       try{
       const userRes = await axios.get(
-        "http://localhost:4000/api/v1/freelancer/view_profile",
+        "https://actify-backend-rubx.onrender.com/api/v1/freelancer/view_profile",
         {
           headers: {
               Authorization: `Bearer ${authToken}`,

@@ -25,7 +25,7 @@ const MyJobPage = () => {
 
     const fetchFreelancerId = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/v1/freelancer/view_profile', {
+        const response = await axios.get('https://actify-backend-rubx.onrender.com/api/v1/freelancer/view_profile', {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },

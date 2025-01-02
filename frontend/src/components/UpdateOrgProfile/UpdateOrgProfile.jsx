@@ -86,7 +86,7 @@ const UpdateProfileOrg = () => {
     const fetchOrgData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/api/v1/org/view_profile",
+          "https://actify-backend-rubx.onrender.com/api/v1/org/view_profile",
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -221,7 +221,7 @@ const UpdateProfileOrg = () => {
     
     try {
       const upload = await axios.post(
-        'http://localhost:4000/api/v1/org/upload_logo',
+        'https://actify-backend-rubx.onrender.com/api/v1/org/upload_logo',
         formData,
         {
           headers: {
@@ -258,7 +258,7 @@ const UpdateProfileOrg = () => {
         socialLinks: socialLinks,
       }
       const response = await axios.put(
-        'http://localhost:4000/api/v1/org/update_id_org',
+        'https://actify-backend-rubx.onrender.com/api/v1/org/update_id_org',
         formData,
         {
           headers: {
