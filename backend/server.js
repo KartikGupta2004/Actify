@@ -18,7 +18,7 @@ connectDB();
 //rest object
 const app = express();
 const corsOptions = {
-  origin: 'https://actify-frontend.onrender.com/', // Your frontend URL
+  origin: 'https://actify-frontend.onrender.com', // Your frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
   allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
 };
