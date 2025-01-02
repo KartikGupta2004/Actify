@@ -19,7 +19,7 @@
 - [Applications](#application)
 - [Project Setup](#project-setup)
 - [Usage](#usage)
-- [Screenshots](#screenshots)
+- [Link](#link)
 
 
 ## 📝Description <a id="description"></a>
@@ -47,7 +47,7 @@ Actify is a dynamic platform designed to connect volunteers with organizations o
 #### Database
 - MongoDB<a href="https://www.mongodb.org/" title="MongoDB"><img src="https://github.com/get-icon/geticon/raw/master/icons/mongodb-icon.svg" alt="MongoDB" width="21px" height="21px"></a>
 
-#### Additional Tools <a id="add-tools"></a>
+#### 💸Additional Tools <a id="add-tools"></a>
 
 - **TensorFlow.js**: For developing a recommendation system.
 - **Google Maps API**: For location-based services.
@@ -101,9 +101,9 @@ Then for activating frontend travel to the folder. <br>
 For frontend execute the command:<br>
 ```npm run dev```
 
-## 📱Screenshots <a id="screenshots"></a>
+## 🔗Link <a id="link"></a>
 
-[Screenshots of the Project](https://drive.google.com/drive/folders/1FEeyNi501ossU48ROYYBavZgLmrf_XuO?usp=sharing)
+[Link of the Project](https://actify-frontend.onrender.com)
 
 
 Let me know if you need further refinements! 😁☺️
