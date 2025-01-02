@@ -25,10 +25,10 @@ const ViewProfileByOrg = () => {
             },
           }
         );
-        console.log(response.data.data)
+        // console.log(response.data.data)
         setUserData(response.data.data);
       } catch (error) {
-        console.error("Error fetching profile:", error);
+        alert("Error fetching profile:", error);
         setError("Failed to fetch profile data");
       } finally {
         setLoading(false);
@@ -44,13 +44,14 @@ const ViewProfileByOrg = () => {
   const {
     name,
     email,
+    phoneNo,
     location,
     skills,
     about,
     photo,
     experiences = [], // Default empty array
     education = [], // Default empty array
-    socialLinks = {}, // Default empty object
+    socialLinks = [],
     rating,
     languages,
     certificate,
@@ -176,32 +177,39 @@ const ViewProfileByOrg = () => {
                       <p><strong>Email:</strong> {email}</p>
                     </div>
                   )}
-                {socialLinks.phoneNo && (
-                  <div className={styles.infoRow}>
-                    <FiPhone className={styles.icon} />
-                    <p><strong>Phone Number:</strong> {socialLinks.phoneNo}</p>
-                  </div>
-                )}
+                {phoneNo && (
+                    <div className={styles.infoRow}>
+                      <FiPhone className={styles.icon} />
+                      <p><strong>Phone Number:</strong> {phoneNo}</p>
+                    </div>
+                  )}
               </div>
             </div>  
       
-            <div className={styles.card}>
-              <h3 className="font-bold mb-2">Social Links</h3>
-              <div className={styles.infoColumn}>
-                {socialLinks.twitter && (
-                  <div className={styles.infoRow}>
-                    <FiTwitter className={styles.icon} />
-                    <p><strong>Twitter:</strong> {socialLinks.twitter}</p>
-                  </div>
-                )}
-                {socialLinks.linkedin && (
-                  <div className={styles.infoRow}>
-                    <FiLinkedin className={styles.icon} />
-                    <p><strong>LinkedIn:</strong> {socialLinks.linkedin}</p>
-                  </div>
-                )}
-              </div>
-            </div>    
+              <div className={styles.card}>
+                <h3 className="font-bold mb-2">Social Links</h3>
+                <div className={styles.infoColumn}>
+                  {socialLinks.length === 0 ? "Not Added": socialLinks.map((link, index) => {
+                    if (link.url) {
+                      return (
+                        <div key={index} className={styles.infoRow}>
+                          {link.platform === 'twitter' && <FiTwitter className={styles.icon} />}
+                          {link.platform === 'linkedin' && <FiLinkedin className={styles.icon} />}
+                          {link.platform === 'facebook' && <FiFacebook className={styles.icon} />}
+                          {link.platform === 'instagram' && <FiInstagram className={styles.icon} />}
+                          {link.platform === 'github' && <FiGithub className={styles.icon} />}
+                          {link.platform === 'other' && <FiLink className={styles.icon} />} {/* Add default icon for 'other' */}
+                          <p>
+                            <strong>{link.platform.charAt(0).toUpperCase() + link.platform.slice(1)}:</strong> 
+                            <a className="ml-2" href={link.url} target="_blank" rel="noopener noreferrer">{link.url}</a>
+                          </p>
+                        </div>
+                      );
+                    }
+                    return null;
+                  })}
+                </div>
+              </div>    
 
             {/* Rating */}
             <div className={styles.card}>

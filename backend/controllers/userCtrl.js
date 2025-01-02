@@ -197,6 +197,7 @@ const registerController = async (req, res) => {
 
 // Auth Controller (for getting user info)
 const authController = async (req, res) => {
+  console.log(req.body)
   try {
     const users = await user.findById({ _id: req.body.userId });
     if (!users) {
@@ -205,13 +206,13 @@ const authController = async (req, res) => {
         success: false,
       });
     }
-
-    users.password = undefined; // Hide password for response
     res.status(200).send({
       success: true,
-      data: users,
+      data: {
+        name: users.name,
+        email: users.email,
+      },
     });
-
   } catch (error) {
     console.log(error);
     res.status(500).send({

@@ -67,11 +67,23 @@ function UsersJobList() {
       fetchJob();
       if(profile){
         fetchUserProfile();
-        if(jobs && userAppliedJobs && jobs.length === userAppliedJobs.length){
-          setAllApplied(true);
-        }
       }
-  }, [authToken]);
+  }, [authToken, profile]);
+
+  useEffect(() => {
+    // Determine if all jobs have been applied
+    if (jobs.length > 0 && userAppliedJobs.length > 0) {
+      const unAppliedJobs = jobs.filter(
+        (job) =>
+          !userAppliedJobs.some((appliedJob) => appliedJob.jobId === job._id)
+      );
+      setAllApplied(unAppliedJobs.length === 0);
+    } else {
+      setAllApplied(false);
+    }
+  }, [jobs, userAppliedJobs]);
+
+  
 
   const handleWorkingScheduleChange = (e) => {
     const { value, checked } = e.target;

@@ -27,6 +27,7 @@ const authMiddleware = async (req, res, next) => {
           success: false,
         });
       } else {
+        console.log("Decoded User ID:", decode.id);
         req.body.userId = decode.id;  // Set user ID on request body
         next();  // Proceed to the next middleware or route handler
       }

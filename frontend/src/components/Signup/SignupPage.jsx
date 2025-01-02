@@ -283,7 +283,11 @@ function SignupPage() {
               <select
                 className={`${styles.brutalistInput} ${styles.smoothType}`}
                 value={formData.role}
-                onChange={(e) => setRole(e.target.value)}
+                onChange={(e) => setFormData((prev) => ({
+                  ...prev,
+                  role: e.target.value
+                }))}
+                
               >
                 <option value="" disabled>
                   SELECT ROLE

@@ -1,12 +1,68 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import styles from "./OrgProfile.module.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
+const countries = [
+  { name: "India", code: "+91" },
+  { name: "United States", code: "+1" },
+  { name: "United Kingdom", code: "+44" },
+  { name: "Canada", code: "+1" },
+  { name: "Australia", code: "+61" },
+  { name: "Germany", code: "+49" },
+  { name: "France", code: "+33" },
+  { name: "Japan", code: "+81" },
+  { name: "China", code: "+86" },
+  { name: "Brazil", code: "+55" },
+  { name: "Russia", code: "+7" },
+  { name: "Spain", code: "+34" },
+  { name: "Italy", code: "+39" },
+  { name: "South Africa", code: "+27" },
+  { name: "Indonesia", code: "+62" },
+  { name: "Philippines", code: "+63" },
+  { name: "New Zealand", code: "+64" },
+  { name: "Egypt", code: "+20" },
+  { name: "Netherlands", code: "+31" },
+  { name: "Sweden", code: "+46" },
+  { name: "South Korea", code: "+82" },
+  { name: "Singapore", code: "+65" },
+  { name: "Portugal", code: "+351" },
+  { name: "Turkey", code: "+90" },
+  { name: "Iran", code: "+98" },
+];
+
+const countryCodeLengths = {
+  "+91": 10, // India
+  "+1": 10, // USA/Canada
+  "+44": 10, // United Kingdom
+  "+61": 9,  // Australia
+  "+81": 10, // Japan
+  "+86": 11, // China
+  "+33": 9,  // France
+  "+49": 10, // Germany
+  "+39": 10, // Italy
+  "+34": 9,  // Spain
+  "+7": 10,  // Russia
+  "+55": 11, // Brazil
+  "+27": 9,  // South Africa
+  "+62": 10, // Indonesia
+  "+63": 10, // Philippines
+  "+64": 9,  // New Zealand
+  "+20": 10, // Egypt
+  "+31": 9,  // Netherlands
+  "+46": 9,  // Sweden
+  "+82": 10, // South Korea
+  "+65": 8,  // Singapore
+  "+351": 9, // Portugal
+  "+90": 10, // Turkey
+  "+98": 10, // Iran
+};
+
 const CreateProfileOrg = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [userName, setUserName] = useState("");
+  const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [roles, setRoles] = useState("");
   const [logo, setLogo] = useState(null);
@@ -22,8 +78,35 @@ const CreateProfileOrg = () => {
     linkedin: "",
     facebook: "",
   });
+  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
   const [errorMessage, setErrorMessage] = useState(""); // State to hold error message
   const [errors, setErrors] = useState({});
+  const authToken = localStorage.getItem("authToken")
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:4000/api/v1/user/getUserData",
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+        const { name, email } = response.data.data;
+          
+        setName(name);
+        setContactInfo((prev) => ({
+          ...prev,
+          email: email,
+        }));
+      } catch (err) {
+        // console.error("Failed to fetch profile data:", err);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
 
   // Handle the change for logo file input
   const handleLogoChange = (e) => {
@@ -54,28 +137,94 @@ const CreateProfileOrg = () => {
     }
   };
 
-  const resetForm = () => {
-    setUserName("");
-    setLocation("");
-    setDescription("");
-    setRoles("");
-    setLogo("");
-    setLogoURL("");
-    setContactInfo({ phone: "",email : "", website: "" });
-    setSocialLinks({ twitter: "",linkedin : "", facebook: "" });
-    setErrorMessage("");
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex
+    return emailRegex.test(email);
   };
 
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    setContactInfo({ ...contactInfo, email: value })
+
+    // Validate email and update fieldErrors
+    if (!validateEmail(value)) {
+      setErrors((prev) => ({
+        ...prev,
+        email: "Invalid email format",
+      }));
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        email: "",
+      }));
+    }
+  };
+
+  const validatePhoneNumber = (phoneNumber, countryCode) => {
+  
+    // Check if phone number contains only numeric characters
+    const numericPattern = /^\d+$/;
+    if (!numericPattern.test(phoneNumber)) {
+      return { valid: false, message: "Phone number must contain only numbers." };
+    }
+  
+    // Check if phone number length matches the country code requirements
+    const expectedLength = countryCodeLengths[countryCode];
+    if (phoneNumber.length !== expectedLength) {
+      return {
+        valid: false,
+        message: `Phone number must be ${expectedLength} digits long for ${countryCode}.`,
+      };
+    }
+
+    return {valid : true};
+  };
+
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    setContactInfo({ ...contactInfo, phone: value })
+
+    const result = validatePhoneNumber(value, selectedCountry.code);
+    // Validate email and update fieldErrors
+    if (!result.valid) {
+      setErrors((prev) => ({
+        ...prev,
+        phone: `${result.message}`,
+      }));
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        phone: "",
+      }));
+    }
+  };
+
+  const handleCountryChange = (e) => {
+    const country = countries.find((c) => c.name === e.target.value);
+    setSelectedCountry(country);
+  };
+  
   const validateStep = () => {
     const newErrors = {};
     if (step === 1) {
-      if (!userName) newErrors.userName = "Organization name is required.";
+      if (!name) newErrors.name = "Organization name is required.";
       if (!description) newErrors.description = "Description is required.";
       if (!roles) newErrors.roles = "Roles offered are required.";
     } else if (step === 2) {
       if (!location) newErrors.location = "Location is required.";
-      if (!contactInfo.phone) newErrors.phone = "Phone number is required.";
-      if (!contactInfo.email) newErrors.email = "Email is required.";
+      if (!contactInfo.phone) {
+        newErrors.phone = "Phone Number is required.";
+      } else {
+        const phoneValidation = validatePhoneNumber(contactInfo.phone, selectedCountry.code);
+        if (!phoneValidation.valid) {
+          newErrors.phone = phoneValidation.message;
+        }
+      }
+      if (!contactInfo.email) {
+        newErrors.email = "Email is required.";
+      } else if (!validateEmail(contactInfo.email)) {
+        newErrors.email = "Invalid email format.";
+      }
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -92,8 +241,10 @@ const CreateProfileOrg = () => {
       console.log("Uploaded Logo URL:", uploadedLogoURL);
       setLogoURL(uploadedLogoURL);
 
+      contactInfo.phone = `${selectedCountry.code} ${contactInfo.phone}`;
+
       const formData = {
-        name: userName,
+        name,
         description: description,
         roles: roles,
         logo: uploadedLogoURL, // Use the uploaded logo URL
@@ -115,9 +266,8 @@ const CreateProfileOrg = () => {
 
       alert("Profile created successfully!");
       setIsLoading(false);
-      resetForm();
       navigate("/viewProfile")
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       if (error.response && error.response.status === 400) {
         // Display specific error message from the backend
@@ -174,16 +324,16 @@ const CreateProfileOrg = () => {
           {step === 1 && (
             <div>
               <div className={styles["form-group"]}>
-                <label htmlFor="userName">Organization Name:</label>
+                <label htmlFor="name">Organization Name:</label>
                 <input
                   type="text"
-                  id="userName"
-                  value={userName}
-                  onChange={(e) => setUserName(e.target.value)}
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   placeholder="Enter Name"
                   className={styles["brutalist-input"]}
                 />
-                {errors.userName && <p className="text-red-500">{errors.userName}</p>}
+                {errors.name && <p className="text-red-500">{errors.name}</p>}
               </div>
               <div className={styles["form-group"]}>
                 <label htmlFor="description">Description:</label>
@@ -226,34 +376,57 @@ const CreateProfileOrg = () => {
                 />
                 {errors.location && <p className="text-red-500">{errors.location}</p>}
               </div>
+
               <div className={styles["form-group"]}>
-                <label htmlFor="contactInfo.phone">Phone:</label>
-                <input
-                  type="tel"
-                  id="contactInfo.phone"
-                  value={contactInfo.phone}
-                  onChange={(e) =>
-                    setContactInfo({ ...contactInfo, phone: e.target.value })
-                  }
-                  placeholder="Enter Verified Phone Number"
+                <label htmlFor="country">Country:</label>
+                <select
                   className={styles["brutalist-input"]}
-                />
-                {errors.phone && <p className="text-red-500">{errors.phone}</p>}
+                  value={selectedCountry.name}
+                  onChange={handleCountryChange}
+                >
+                  {countries.map((country) => (
+                    <option key={country.name} value={country.name}>
+                      {country.name} ({country.code})
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className={styles["form-group"]}>
-                <label htmlFor="contactInfo.email">Email:</label>
+                <label htmlFor="phoneNo">Phone Number:</label>
+                  <input
+                      type="text"
+                      id="contactInfo.phone"
+                      value={contactInfo.phone}
+                      onChange={handlePhoneChange}
+                      placeholder="Enter Phone Number"
+                      className={styles["brutalist-input"]}
+                    />
+                {errors.phone && <p className="text-red-500">{errors.phone}</p>}
+              </div>
+
+              <div className={styles["form-group"]}>
+                <label htmlFor="email">Email Address:</label>
                 <input
                   type="email"
                   id="contactInfo.email"
                   value={contactInfo.email}
-                  onChange={(e) =>
-                    setContactInfo({ ...contactInfo, email: e.target.value })
-                  }
-                  placeholder="For eg. k@gmail.com"
+                  onChange={handleEmailChange}
+                  placeholder="Enter Email"
                   className={styles["brutalist-input"]}
                 />
                 {errors.email && <p className="text-red-500">{errors.email}</p>}
               </div>
+    
+              <div className="flex justify-between">
+                <button type="button" onClick={prevStep} className={styles["button"]}>Back</button>
+                <button type="button" onClick={nextStep} className={styles["button"]}>Next</button>
+              </div>
+            </div>
+          )}
+
+          {/* Step 3: Social Links and Logo */}
+          {step === 3 && (
+            <div>
               <div className={styles["form-group"]}>
                 <label htmlFor="contactInfo.website">Website:</label>
                 <input
@@ -267,16 +440,6 @@ const CreateProfileOrg = () => {
                   className={styles["brutalist-input"]}
                 />
               </div>
-              <div className="flex justify-between">
-                <button type="button" onClick={prevStep} className={styles["button"]}>Back</button>
-                <button type="button" onClick={nextStep} className={styles["button"]}>Next</button>
-              </div>
-            </div>
-          )}
-
-          {/* Step 3: Social Links and Logo */}
-          {step === 3 && (
-            <div>
               <div className={styles["form-group"]}>
                 <label htmlFor="socialLinks.twitter">Twitter Link:</label>
                 <input

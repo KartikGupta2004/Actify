@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./ViewOrgProfile.module.css";
 import defaultProfileImage from "./Profile-Image.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FiMail, FiMapPin, FiPhone, FiGlobe, FiTwitter, FiLinkedin, FiFacebook } from "react-icons/fi";
 import Loader from "../Loader/Loader";
 
@@ -10,7 +10,6 @@ const ViewProfileOrg = () => {
   const [orgData, setOrgData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
   useEffect(() => {
     setLoading(true);
     const fetchOrgData = async () => {

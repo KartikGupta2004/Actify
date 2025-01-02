@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import styles from "./createProfile.module.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -98,7 +98,30 @@ const CreateProfileUser = () => {
   const [languages, setLanguages] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
   const [selectedCountry, setSelectedCountry] = useState(countries[0]);
+  const authToken = localStorage.getItem("authToken")
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:4000/api/v1/user/getUserData",
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+        const { name, email } = response.data.data;
+          
+        setName(name);
+        setEmail(email);
+      } catch (err) {
+        // console.error("Failed to fetch profile data:", err);
+      }
+    };
 
+    fetchProfileData();
+  }, []);
+  
   const handleCertificateChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile && selectedFile.size > 5 * 1024 * 1024) {
