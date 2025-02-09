@@ -26,7 +26,7 @@
 
 Actify is a dynamic platform designed to connect volunteers with organizations offering service opportunities. It addresses the fragmentation, inefficiency, and lack of personalization in current volunteer matching systems, providing a centralized and streamlined solution.
 
-## 📝Key Features <a id="features"></a>
+## Key Features <a id="features"></a>
 
 - Match volunteers with service opportunities based on skills, interests, and location.
 - Enable organizations to post, edit, and manage opportunities effectively.
@@ -67,7 +67,7 @@ Fully Implemented features of the project:
 
 - Integration of real-time chat features for seamless communication between volunteers and organizations.
 - Implementation of a feedback and rating system to enhance trust and accountability.
-- Advanced analytics dashboard for organizations to track engagement an
+- Advanced analytics dashboard for organizations to track engagement and impact.
 
 ## 🚀Applications <a id="application"></a>
 
@@ -103,7 +103,7 @@ For frontend execute the command:<br>
 
 ## 🔗Link <a id="link"></a>
 
-[Link of the Project](https://actify-frontend.onrender.com)
+[Link to the hosted Project](https://actify-frontend.onrender.com)
 
 
 Let me know if you need further refinements! 😁☺️
