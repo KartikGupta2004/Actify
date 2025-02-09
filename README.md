@@ -30,7 +30,7 @@ Actify is a dynamic platform designed to connect volunteers with organizations o
 
 - Match volunteers with service opportunities based on skills, interests, and location.
 - Enable organizations to post, edit, and manage opportunities effectively.
-- Notify volunteers of new opportunities that align with their profiles.
+- Notify volunteers about the outcome of their applications.
 - Facilitate profile creation and management for both volunteers and organizations.
 
 ## 🤖Tech-Stack <a id="tech-stack"></a>
@@ -42,7 +42,7 @@ Actify is a dynamic platform designed to connect volunteers with organizations o
 - CSS<a href="https://www.w3.org/TR/CSS/" title="CSS3"><img src="https://github.com/get-icon/geticon/raw/master/icons/css-3.svg" alt="CSS3" width="21px" height="21px"></a>
 -Tailwind CSS <a href="https://tailwindcss.com/" title="Tailwind CSS"><img src="https://github.com/get-icon/geticon/raw/master/icons/tailwindcss-icon.svg" alt="Tailwind CSS" width="21px" height="21px"></a>
 #### Back-end
-- ExpressJS <a href="https://expressjs.com/" title="Express.js"><img style="background-color: white; padding: 3px;" src="https://cdn.icon-icons.com/icons2/2699/PNG/512/expressjs_logo_icon_169185.png" alt="Express.js" height="20px"></a>
+- ExpressJS
 - NodeJS <a href="https://nodejs.org/" title="Node.js"><img src="https://github.com/get-icon/geticon/raw/master/icons/nodejs-icon.svg" alt="Node.js" width="21px" height="21px" ></a>
 #### Database
 - MongoDB<a href="https://www.mongodb.org/" title="MongoDB"><img src="https://github.com/get-icon/geticon/raw/master/icons/mongodb-icon.svg" alt="MongoDB" width="21px" height="21px"></a>
@@ -60,11 +60,12 @@ Fully Implemented features of the project:
 - [x] User registration and authentication for both volunteers and organizations.
 - [x] Profile management for volunteers and organizations.
 - [x] Service opportunity management, including posting, editing, and deleting opportunities.
-- [x] Notification system to alert volunteers about opportunities that match their profiles.
+- [x] Notification system to alert volunteers about the outcomes of their application.
 - [x] AI-based recommendation system for personalized volunteer matching.
 
 ## 🔮Future Scope <a id="future-scope"></a>
 
+- Notification system to alert volunteers about opportunities that match their profiles.
 - Integration of real-time chat features for seamless communication between volunteers and organizations.
 - Implementation of a feedback and rating system to enhance trust and accountability.
 - Advanced analytics dashboard for organizations to track engagement and impact.
